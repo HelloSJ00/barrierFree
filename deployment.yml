@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-app
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: spring-app
+        tier: backend
+    spec:
+      containers:
+        - name: core
+          image: contest42-server.kr.ncr.ntruss.com/contest42-server:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
