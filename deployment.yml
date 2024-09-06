@@ -21,3 +21,5 @@ spec:
           ports:
             - containerPort: 8080
               protocol: TCP
+      imagePullSecrets:
+        - name: my-registry-secret
