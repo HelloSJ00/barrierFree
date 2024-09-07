@@ -3,11 +3,11 @@ apiVersion: v1
 metadata:
   name: spring-service
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: spring-app
     tier: backend
   ports:
     - protocol: TCP
-      port: 80
+      port: 8080
       targetPort: 8080
