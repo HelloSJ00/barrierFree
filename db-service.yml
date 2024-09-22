@@ -1,0 +1,26 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: mysql-service
+spec:
+  type: ClusterIP
+  selector:
+    app: database
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mongodb-service
+spec:
+  type: ClusterIP
+  selector:
+    app: database
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017

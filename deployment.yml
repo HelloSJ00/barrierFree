@@ -18,6 +18,27 @@ spec:
         - name: core
           image: contest42-server.kr.ncr.ntruss.com/contest42-server:latest
           imagePullPolicy: Always
+          env:
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: mysql-user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: mysql-password
+            - name: MONGODB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: mongodb-user
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: mongodb-password
           ports:
             - containerPort: 8080
               protocol: TCP
