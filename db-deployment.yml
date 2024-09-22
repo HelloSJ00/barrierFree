@@ -23,6 +23,9 @@ spec:
                   key: mysql-password
           ports:
             - containerPort: 3306
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mysql-storage
 
         - name: mongodb
           image: mongo:latest
@@ -39,3 +42,10 @@ spec:
                   key: mongodb-password
           ports:
             - containerPort: 27017
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+        - name: mongodb-storage
+          persistentVolumeClaim:
+            claimName: mongodb-pvc
