@@ -1,4 +1,7 @@
 spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/test_db  # MongoDB 연결 URI
   datasource:
     url: jdbc:mysql://localhost:3306/test_db
     username: root
