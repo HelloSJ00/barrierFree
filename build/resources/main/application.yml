@@ -1,4 +1,18 @@
 spring:
+<<<<<<< HEAD
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/test_db  # MongoDB 연결 URI
+  datasource:
+    url: jdbc:mysql://localhost:3306/test_db
+    username: root
+    password: dh7672@@
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+=======
   datasource:
     url:
     username:
@@ -8,6 +22,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+>>>>>>> naver/dev
     properties:
       hibernate:
         show_sql: true

@@ -1,13 +1,16 @@
 spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/test_db  # MongoDB 연결 URI
   datasource:
-    url:
-    username:
-    password:
-    driver-class-name:
+    url: jdbc:mysql://localhost:3306/test_db
+    username: root
+    password: dh7672@@
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: true
