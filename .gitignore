@@ -58,6 +58,7 @@ out/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
+.idae/modules
 
 # JIRA plugin
 atlassian-ide-plugin.xml
@@ -166,5 +167,11 @@ gradle-app.setting
 ### Gradle Patch ###
 # Java heap dump
 *.hprof
+.gradle/8.8/fileHashes/fileHashes.lock
+.gradle/8.8/fileHashes/fileHashes.bin
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.idea/modules/barrierFree.main.iml
+
+
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,gradle
