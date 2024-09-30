@@ -26,6 +26,7 @@ public class Place {
      * 0: int값이라 별도의 설정이 없다면 기본값이 0
      */
     private int reviewCount;
+    private Double reviewTotalScore;
 
     public Place(String placename) {
         this.placename = placename;
