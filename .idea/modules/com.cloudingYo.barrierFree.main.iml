@@ -24,6 +24,8 @@
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-data-mongodb:3.3.3" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-validation:3.3.3" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-web:3.3.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-security:3.3.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-crypto:6.3.3" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:24.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-aop:3.3.3" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-jdbc:3.3.3" level="project" />
@@ -39,6 +41,8 @@
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-tomcat:3.3.3" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-webmvc:6.1.12" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-web:6.1.12" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-config:6.3.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-web:6.3.3" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-aop:6.1.12" level="project" />
     <orderEntry type="library" name="Gradle: org.aspectj:aspectjweaver:1.9.22.1" level="project" />
     <orderEntry type="library" name="Gradle: com.zaxxer:HikariCP:5.1.0" level="project" />
@@ -71,6 +75,7 @@
     <orderEntry type="library" name="Gradle: org.apache.tomcat.embed:tomcat-embed-websocket:10.1.28" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.tomcat.embed:tomcat-embed-core:10.1.28" level="project" />
     <orderEntry type="library" name="Gradle: io.micrometer:micrometer-observation:1.13.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-core:6.3.3" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-jcl:6.1.12" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-classic:1.5.7" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-to-slf4j:2.23.1" level="project" />
