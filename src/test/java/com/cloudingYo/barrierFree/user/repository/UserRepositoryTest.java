@@ -5,14 +5,17 @@ import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@Commit
 class UserRepositoryTest {
 
     @Autowired
@@ -45,8 +48,8 @@ class UserRepositoryTest {
         em.flush();
         em.clear();
 
-        User findUser = userRepository.findByEmail("a");  // 이메일로 유저 찾기
-        assertEquals("a", findUser.getEmail());
+        Optional<User> findUser = userRepository.findByEmail("a");  // 이메일로 유저 찾기
+        assertEquals("a", (findUser.get()).getEmail());
     }
 
 
