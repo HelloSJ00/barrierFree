@@ -5,6 +5,7 @@ import com.cloudingYo.barrierFree.review.dto.ReviewDTO;
 import com.cloudingYo.barrierFree.review.dto.ReviewResponseDTO;
 import com.cloudingYo.barrierFree.review.repository.ReviewRepository;
 import com.mongodb.DuplicateKeyException;
+import com.mongodb.MongoWriteException;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
@@ -56,20 +57,17 @@ public class ReviewServiceImpl implements ReviewService {
                     .rating(reviewDTO.getRating())
                     .build();
             return reviewRepository.save(review);
-        } catch (DuplicateKeyException e) {
-            throw new RuntimeException("이 사용자와 장소에 대한 리뷰는 이미 존재합니다.");
+        } catch (MongoWriteException e) {
+            throw new RuntimeException("이 장소에 대한 리뷰는 이미 존재합니다.");
         }
     }
 
     @Override
     public Review updateReview(ReviewDTO reviewDTO){
-        Review newReview = Review.builder()
-                .userId(reviewDTO.getUserId())
-                .placeId(reviewDTO.getPlaceId())
-                .content(reviewDTO.getContent())
-                .rating(reviewDTO.getRating())
-                .build();
-        return reviewRepository.save(newReview);
+        Review byPlaceIdAndUserId = reviewRepository.findByPlaceIdAndUserId(reviewDTO.getPlaceId(), reviewDTO.getUserId());
+        byPlaceIdAndUserId.editRating(reviewDTO.getRating());
+        byPlaceIdAndUserId.editContent(reviewDTO.getContent());
+        return reviewRepository.save(byPlaceIdAndUserId);
     }
 
     @Override

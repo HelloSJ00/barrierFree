@@ -30,15 +30,11 @@ public class Review {
      */
     private int rating;
 
-    public void editPlaceId(Long placeId) {
-        this.placeId = placeId;
-    }
-
-    public void editContent(String content) {
-        this.content = content;
-    }
-
-    public void editRating(int rating) {
+    public void editRating(int rating){
         this.rating = rating;
+    }
+
+    public void editContent(String content){
+        this.content = content;
     }
 }
