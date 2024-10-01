@@ -36,8 +36,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isEmailExists(UserDTO userDTO) {
-        return userRepository.findByEmail(userDTO.getEmail()).isPresent();
+    public UserDTO findUser(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        return user.map(value -> UserDTO.builder()
+                .username(value.getUsername())
+                .email(value.getEmail())
+                .build()).orElse(null);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean isEmailExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
     }
 
     @Override

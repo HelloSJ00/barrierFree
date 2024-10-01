@@ -7,9 +7,10 @@ public interface UserService {
 
     // 기본
     User createUser(String username,String email, String password);
+    UserDTO findUser(String email);
 
     // 회원가입
-    boolean isEmailExists(UserDTO userDTO);
+    boolean isEmailExists(String email);
     void registerUser(UserDTO userDTO);
 
     // 로그인

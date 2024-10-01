@@ -1,5 +1,6 @@
 package com.cloudingYo.barrierFree.user.controller;
 
+import com.cloudingYo.barrierFree.common.entity.ApiResponse;
 import com.cloudingYo.barrierFree.user.dto.UserDTO;
 import com.cloudingYo.barrierFree.user.dto.UserResponseDTO;
 import com.cloudingYo.barrierFree.user.entity.User;
@@ -19,53 +20,75 @@ public class UserControllerImpl implements UserController {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @GetMapping("/emailCheck")
+    public ResponseEntity<UserResponseDTO<?>> emailCheck(@RequestParam String email) {
+        if (userService.isEmailExists(email)){
+            return ResponseEntity.ok(UserResponseDTO.fail("이미 존재하는 이메일입니다."));
+        }
+        else{
+            return ResponseEntity.ok(UserResponseDTO.success("사용 가능한 이메일입니다."));
+        }
+    }
+    @Override
     @PostMapping("/register")
-    public String registerUser(@RequestBody UserDTO userDTO) {
-        if (userService.isEmailExists(userDTO)){
-            System.out.println("이미 존재하는 이메일입니다.");
-            return "이미 존재하는 이메일입니다.";
+    public ResponseEntity<UserResponseDTO<?>> registerUser(@RequestBody UserDTO userDTO) {
+        if (userService.isEmailExists(userDTO.getEmail())){
+            return ResponseEntity.ok(UserResponseDTO.fail("이미 존재하는 이메일입니다."));
         }
         else{
             userService.registerUser(userDTO);
-            System.out.println("회원가입이 완료되었습니다.");
-            return "회원가입이 완료되었습니다.";
+            return ResponseEntity.ok(UserResponseDTO.success("회원가입이 완료되었습니다."));
+        }
+    }
+
+
+    @Override
+    @GetMapping("/findUser")
+    public ResponseEntity<UserResponseDTO<?>> findUser(@RequestParam String email) {
+        UserDTO findUser = userService.findUser(email);
+        if (findUser == null){
+            return ResponseEntity.ok(UserResponseDTO.fail("회원정보를 찾을 수 없습니다."));
+        }
+        else{
+            return ResponseEntity.ok(UserResponseDTO.success("회원정보를 찾았습니다.", findUser));
         }
     }
 
     @Override
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
-        // userService.login() 에서 passwordEncoder.encode()를 사용하여 로그인
+    public ResponseEntity<UserResponseDTO<?>> login(@RequestBody UserDTO userDTO) {
         User user = userService.login(userDTO.getEmail(), userDTO.getPassword());
-
         if (user == null){
-            System.out.println("로그인 실패");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패: 이메일 또는 비밀번호가 잘못되었습니다.");
+            return ResponseEntity.ok(UserResponseDTO.fail("로그인에 실패했습니다."));
         }
-
-        UserResponseDTO userResponseDTO = new UserResponseDTO(user.getId(),user.getUsername(), user.getEmail());
-        return ResponseEntity.ok(userResponseDTO);
+        else{
+            UserDTO findUserDTO = UserDTO.builder()
+                    .username(user.getUsername())
+                    .email(user.getEmail())
+                    .build();
+            return ResponseEntity.ok(UserResponseDTO.success("로그인에 성공했습니다.", findUserDTO));
+        }
     }
 
     @Override
     @PutMapping("/userUpdate")
-    public String updateUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserResponseDTO<?>> updateUser(@RequestBody UserDTO userDTO) {
         if (userService.updateUser(userDTO)){
-            return "회원정보가 수정되었습니다.";
+            return ResponseEntity.ok(UserResponseDTO.success("회원정보 수정이 완료되었습니다."));
         }
         else{
-            return "회원정보 수정에 실패했습니다.";
+            return ResponseEntity.ok(UserResponseDTO.fail("회원정보 수정에 실패했습니다."));
         }
     }
 
     @Override
     @DeleteMapping("/deleteUser")
-    public String deleteUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserResponseDTO<?>> deleteUser(@RequestBody UserDTO userDTO) {
         if (userService.deleteUser(userDTO)){
-            return "회원탈퇴가 완료되었습니다.";
+            return ResponseEntity.ok(UserResponseDTO.success("회원탈퇴가 완료되었습니다."));
         }
         else{
-            return "회원탈퇴에 실패했습니다.";
+            return ResponseEntity.ok(UserResponseDTO.fail("회원탈퇴에 실패했습니다."));
         }
     }
 }
