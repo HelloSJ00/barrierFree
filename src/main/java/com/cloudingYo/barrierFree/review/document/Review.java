@@ -1,11 +1,10 @@
 package com.cloudingYo.barrierFree.review.document;
 
-import com.cloudingYo.barrierFree.place.entity.Place;
-import com.cloudingYo.barrierFree.user.entity.User;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import lombok.*;
 
 @Document(collection = "reviews")  // MongoDB의 컬렉션 명을 지정
@@ -14,6 +13,9 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
+@CompoundIndexes({
+        @CompoundIndex(name = "user_place_unique_idx", def = "{'userId': 1, 'placeId': 1}", unique = true)
+})
 public class Review {
 
     @Id

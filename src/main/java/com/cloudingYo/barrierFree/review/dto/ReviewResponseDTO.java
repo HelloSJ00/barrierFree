@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.bson.types.ObjectId;
 
 @Setter
+@Getter
 @Builder
 public class ReviewResponseDTO {
         private ObjectId id;

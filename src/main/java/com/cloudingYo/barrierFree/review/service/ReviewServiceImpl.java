@@ -4,7 +4,9 @@ import com.cloudingYo.barrierFree.review.document.Review;
 import com.cloudingYo.barrierFree.review.dto.ReviewDTO;
 import com.cloudingYo.barrierFree.review.dto.ReviewResponseDTO;
 import com.cloudingYo.barrierFree.review.repository.ReviewRepository;
+import com.mongodb.DuplicateKeyException;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,28 +37,34 @@ public class ReviewServiceImpl implements ReviewService {
         if (reviewDTO.getPlaceId() == null || reviewDTO.getUserId() == null) {
             throw new IllegalArgumentException("placeId와 userId는 필수 값입니다.");
         }
-        Review review = Review.builder()
-                .placeId(reviewDTO.getPlaceId())
-                .userId(reviewDTO.getUserId())
-                .rating(reviewDTO.getRating())
-                .content(reviewDTO.getContent())
-                .build();
-        return reviewRepository.save(review);
+        try {
+            Review review = Review.builder()
+                    .userId(reviewDTO.getUserId())
+                    .placeId(reviewDTO.getPlaceId())
+                    .content(reviewDTO.getContent())
+                    .rating(reviewDTO.getRating())
+                    .build();
+            return reviewRepository.save(review);
+        } catch (DuplicateKeyException e) {
+            throw new RuntimeException("이 사용자와 장소에 대한 리뷰는 이미 존재합니다.");
+        }
     }
 
     @Override
     public Review updateReview(ReviewDTO reviewDTO){
-        Review review = reviewRepository.findById(reviewDTO.getId()).orElseThrow();
-        review.editPlaceId(reviewDTO.getPlaceId());
-        review.editRating(reviewDTO.getRating());
-        review.editContent(reviewDTO.getContent());
-        return reviewRepository.save(review);
+        Review newReview = Review.builder()
+                .id(reviewDTO.getId())
+                .userId(reviewDTO.getUserId())
+                .placeId(reviewDTO.getPlaceId())
+                .content(reviewDTO.getContent())
+                .rating(reviewDTO.getRating())
+                .build();
+        return reviewRepository.save(newReview);
     }
 
     @Override
-    public boolean deleteReview(Long id){
-        reviewRepository.deleteById(id);
-        return true;
+    public Review deleteReview(Long placeId, Long userId){
+        return reviewRepository.deleteByPlaceIdAndUserId(placeId, userId);
     }
 
 }
