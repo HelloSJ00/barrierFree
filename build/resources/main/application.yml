@@ -2,6 +2,7 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/test_db  # MongoDB 연결 URI
+      auto-index-creation: true  # 인덱스를 자동으로 생성
   datasource:
     url: jdbc:mysql://localhost:3306/test_db
     username: root

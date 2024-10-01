@@ -1,5 +1,6 @@
 package com.cloudingYo.barrierFree.user.service;
 
+import com.cloudingYo.barrierFree.user.dto.UserDTO;
 import com.cloudingYo.barrierFree.user.entity.User;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
@@ -28,9 +29,12 @@ class UserServiceImplTest {
     void 이메일중복확인() {
         // given
         String email = "123@123.com";
+        UserDTO userDTO = UserDTO.builder()
+                .email(email)
+                .build();
 
         // when
-        boolean result = userService.isEmailExists(email);
+        boolean result = userService.isEmailExists(userDTO);
 
         // then
         assertTrue(result);
@@ -42,34 +46,37 @@ class UserServiceImplTest {
     @Rollback(false)
     void 유저생성_탈퇴() {
         // given
-        String username = "test";
-        String email = "123@123.com";
-        String password = "test";
+        UserDTO userDTO = UserDTO.builder()
+                .username("test")
+                .email("test@test.com")
+                .password("test")
+                .build();
 
         // when
-        User user = userService.createUser(username, email, password);
-        userService.registerUser(user);
+        userService.registerUser(userDTO);
 
         em.flush();
         em.clear();
 
-        boolean result = userService.isEmailExists(email);  // 메서드 이름 변경
+        boolean result = userService.isEmailExists(userDTO);  // 메서드 이름 변경
         org.assertj.core.api.Assertions.assertThat(result).isTrue();
 
+        // when
+        User user = userService.login(userDTO.getEmail(), userDTO.getPassword());
         // then
-        assertEquals(user.getUsername(), username);
-        assertEquals(user.getEmail(), email);
-        assertTrue(passwordEncoder.matches(password, user.getPassword()));  // 암호화된 비밀번호 비교
+        assertEquals(user.getUsername(), userDTO.getUsername());
+        assertEquals(user.getEmail(), userDTO.getEmail());
+        assertTrue(passwordEncoder.matches(userDTO.getPassword(), user.getPassword()));  // 암호화된 비밀번호 비교
         System.out.println("유저 생성 테스트 끝");
 
         // when
-        userService.deleteUser(user);
+        userService.deleteUser(userDTO);
 
         // flush와 clear를 호출하여 데이터베이스 상태를 갱신
         em.flush();
         em.clear();
 
-        boolean deleteResult = userService.isEmailExists(email);  // 이메일 존재 여부 재확인
+        boolean deleteResult = userService.isEmailExists(userDTO);  // 이메일 존재 여부 재확인
         org.assertj.core.api.Assertions.assertThat(deleteResult).isFalse();
     }
 
@@ -81,17 +88,16 @@ class UserServiceImplTest {
     @Transactional
     void 로그인() {
         // given
-        String username = "test";
-        String email = "123@123.com";
-        String password = "test";
-
-        // when
-        User user = userService.createUser(username, email, password);
-        userService.registerUser(user);
+        UserDTO userDTO = UserDTO.builder()
+                .username("test")
+                .email("test@test1.com")
+                .password("test")
+                .build();
+        userService.registerUser(userDTO);
         em.flush();
         em.clear();
         // when
-        User loginUser = userService.login(email, password);
+        User loginUser = userService.login(userDTO.getEmail(), userDTO.getPassword());
 
 
         // then
