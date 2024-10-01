@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,18 +38,11 @@ class ReviewServiceImplTest {
 
     @Test
     void updateReview() {
-        // given
-        ReviewDTO reviewDTO = ReviewDTO.builder()
-                .placeId(1L)
-                .userId(3L)
-                .rating(5)
-                .content("좋아요")
-                .build();
-        Review review = reviewService.createReview(reviewDTO);
-        ReviewResponseDTO findReview = reviewService.getReviews(review.getPlaceId()).get(0);
+        Long placeId = 1L;
+        Long userId = 1L;
+        ReviewDTO findReview = reviewService.getReview(placeId,userId);
 
         ReviewDTO updateReviewDTO = ReviewDTO.builder()
-                .id(findReview.getId())
                 .placeId(findReview.getPlaceId())
                 .userId(findReview.getUserId())
                 .rating(4)
@@ -60,6 +52,17 @@ class ReviewServiceImplTest {
         Review result = reviewService.updateReview(updateReviewDTO);
         // then
         assertEquals(updateReviewDTO.getRating(), result.getRating());
+    }
+
+    @Test
+    void deleteReview() {
+        Long placeId = 1L;
+        Long userId = 1L;
+        ReviewDTO findReview = reviewService.getReview(placeId,userId);
+        // when
+        Review result = reviewService.deleteReview(findReview.getPlaceId(), findReview.getUserId());
+        // then
+        assertEquals(findReview.getPlaceId(), result.getPlaceId());
     }
 
 }

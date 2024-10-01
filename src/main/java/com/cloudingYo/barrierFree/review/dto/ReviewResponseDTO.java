@@ -9,7 +9,6 @@ import org.bson.types.ObjectId;
 @Getter
 @Builder
 public class ReviewResponseDTO {
-        private ObjectId id;
         private Long placeId;
         private Long userId;
         private int rating;

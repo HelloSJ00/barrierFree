@@ -20,10 +20,21 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ReviewResponseDTO> getReviews(Long id){
-        return reviewRepository.findByPlaceId(id)
-                .stream().map(review -> ReviewResponseDTO.builder()
-                        .id(review.getId())
+    public ReviewDTO getReview(Long placeId, Long userId){
+        Review review = reviewRepository.findByPlaceIdAndUserId(placeId, userId);
+        return ReviewDTO.builder()
+                .placeId(review.getPlaceId())
+                .userId(review.getUserId())
+                .rating(review.getRating())
+                .content(review.getContent())
+                .build();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReviewDTO> getReviews(Long placeId){
+        return reviewRepository.findByPlaceId(placeId)
+                .stream().map(review -> ReviewDTO.builder()
                         .placeId(review.getPlaceId())
                         .userId(review.getUserId())
                         .rating(review.getRating())
@@ -53,7 +64,6 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Review updateReview(ReviewDTO reviewDTO){
         Review newReview = Review.builder()
-                .id(reviewDTO.getId())
                 .userId(reviewDTO.getUserId())
                 .placeId(reviewDTO.getPlaceId())
                 .content(reviewDTO.getContent())
