@@ -18,4 +18,11 @@ public class ApiResponse<T> {
                 .message(s)
                 .build();
     }
+
+    public static ApiResponse<?> success(String s) {
+        return ApiResponse.builder()
+                .status(200)
+                .message(s)
+                .build();
+    }
 }
