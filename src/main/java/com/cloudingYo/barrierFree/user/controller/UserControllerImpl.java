@@ -26,7 +26,7 @@ public class UserControllerImpl implements UserController {
             return ResponseEntity.ok(UserResponseDTO.fail("이미 존재하는 이메일입니다."));
         }
         else{
-            return ResponseEntity.ok(UserResponseDTO.success("사용 가능한 이메일입니다."));
+            return ResponseEntity.ok(UserResponseDTO.success("사용 가능한 이메일입니다.",true));
         }
     }
     @Override
