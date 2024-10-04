@@ -10,12 +10,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CustomUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -70,10 +73,22 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
         HttpSession session = request.getSession(true);
         session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 
-        // 응답 처리: 원하는 성공 메시지 반환
+        // 인증된 사용자 정보 추출
+        String username = authResult.getName(); // 인증된 사용자 이름 (보통 이메일이나 유저명)
+        Collection<? extends GrantedAuthority> roles = authResult.getAuthorities(); // 권한 정보
+
+        // 원하는 JSON 응답 생성
+        String jsonResponse = String.format("{\"message\": \"Login successful\", \"user\": \"%s\", \"roles\": \"%s\"}",
+                username,
+                roles.stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(", ")));
+
+        // 응답 처리
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().write("Authentication Successful");
+        response.getWriter().write(jsonResponse);
     }
+
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
