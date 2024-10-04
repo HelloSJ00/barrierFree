@@ -3,8 +3,10 @@ package com.cloudingYo.barrierFree.user.controller;
 import com.cloudingYo.barrierFree.common.entity.ApiResponse;
 import com.cloudingYo.barrierFree.user.dto.UserDTO;
 import com.cloudingYo.barrierFree.user.dto.UserResponseDTO;
+import com.cloudingYo.barrierFree.user.dto.UserSignupDTO;
 import com.cloudingYo.barrierFree.user.entity.User;
 import com.cloudingYo.barrierFree.user.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,23 +22,41 @@ public class UserControllerImpl implements UserController {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @GetMapping("/sessionCheck")
+    public ResponseEntity<String> checkSession(HttpSession session) {
+        // 세션이 존재하는지 확인
+        if (session == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Session not found");
+        }
+
+        Long userId = (Long) session.getAttribute("userId");
+
+        // 세션이 있더라도 userId가 없으면 401 응답
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Session expired or userId not set");
+        }
+
+        return ResponseEntity.ok("session active");
+    }
+
+    @Override
     @GetMapping("/emailCheck")
     public ResponseEntity<UserResponseDTO<?>> emailCheck(@RequestParam String email) {
         if (userService.isEmailExists(email)){
             return ResponseEntity.ok(UserResponseDTO.fail("이미 존재하는 이메일입니다."));
         }
         else{
-            return ResponseEntity.ok(UserResponseDTO.success("사용 가능한 이메일입니다."));
+            return ResponseEntity.ok(UserResponseDTO.success("사용 가능한 이메일입니다.",true));
         }
     }
     @Override
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO<?>> registerUser(@RequestBody UserDTO userDTO) {
-        if (userService.isEmailExists(userDTO.getEmail())){
+    public ResponseEntity<UserResponseDTO<?>> registerUser(@RequestBody UserSignupDTO userSignupDTO) {
+        if (userService.isEmailExists(userSignupDTO.getEmail())){
             return ResponseEntity.ok(UserResponseDTO.fail("이미 존재하는 이메일입니다."));
         }
         else{
-            userService.registerUser(userDTO);
+            userService.registerUser(userSignupDTO);
             return ResponseEntity.ok(UserResponseDTO.success("회원가입이 완료되었습니다."));
         }
     }

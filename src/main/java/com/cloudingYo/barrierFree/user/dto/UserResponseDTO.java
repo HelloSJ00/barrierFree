@@ -34,7 +34,15 @@ public class UserResponseDTO<T> {
                     .build();
         }
 
-        public UserResponseDTO<?> fail(String s, T data) {
+    public static UserResponseDTO<?> success(String s, boolean b) {
+        return UserResponseDTO.builder()
+                .status(200)
+                .message(s)
+                .data(b)
+                .build();
+    }
+
+    public UserResponseDTO<?> fail(String s, T data) {
             return UserResponseDTO.builder()
                     .status(400)
                     .message(s)

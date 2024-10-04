@@ -1,6 +1,7 @@
 package com.cloudingYo.barrierFree.user.service;
 
 import com.cloudingYo.barrierFree.user.dto.UserDTO;
+import com.cloudingYo.barrierFree.user.dto.UserSignupDTO;
 import com.cloudingYo.barrierFree.user.entity.User;
 
 public interface UserService {
@@ -11,7 +12,7 @@ public interface UserService {
 
     // 회원가입
     boolean isEmailExists(String email);
-    void registerUser(UserDTO userDTO);
+    void registerUser(UserSignupDTO userSignupDTO);
 
     // 로그인
     User login(String email, String password);
