@@ -18,20 +18,33 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    // AuthenticationManager를 빈으로 등록
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
+        // Custom 필터 생성 및 AuthenticationManager 주입
+        CustomUsernamePasswordAuthenticationFilter customFilter = new CustomUsernamePasswordAuthenticationFilter(authenticationManager);
+        customFilter.setFilterProcessesUrl("/user/login");  // 필터가 처리할 경로 설정
+
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/review/register", "/review/delete").hasRole("USER")
                         .requestMatchers("/", "/user/*", "/login", "/user/login", "/user/logout").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilter(new CustomUsernamePasswordAuthenticationFilter(http.getSharedObject(AuthenticationManager.class)))  // JSON 로그인 필터 추가
+                .addFilter(customFilter)  // JSON 로그인 필터 추가
                 .sessionManagement((session) -> session
                         .maximumSessions(1)
                         .expiredUrl("/login?expired=true")
