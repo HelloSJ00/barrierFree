@@ -3,6 +3,7 @@ package com.cloudingYo.barrierFree.user.controller;
 import com.cloudingYo.barrierFree.common.entity.ApiResponse;
 import com.cloudingYo.barrierFree.user.dto.UserDTO;
 import com.cloudingYo.barrierFree.user.dto.UserResponseDTO;
+import com.cloudingYo.barrierFree.user.dto.UserSignupDTO;
 import com.cloudingYo.barrierFree.user.entity.User;
 import com.cloudingYo.barrierFree.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,12 +32,12 @@ public class UserControllerImpl implements UserController {
     }
     @Override
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO<?>> registerUser(@RequestBody UserDTO userDTO) {
-        if (userService.isEmailExists(userDTO.getEmail())){
+    public ResponseEntity<UserResponseDTO<?>> registerUser(@RequestBody UserSignupDTO userSignupDTO) {
+        if (userService.isEmailExists(userSignupDTO.getEmail())){
             return ResponseEntity.ok(UserResponseDTO.fail("이미 존재하는 이메일입니다."));
         }
         else{
-            userService.registerUser(userDTO);
+            userService.registerUser(userSignupDTO);
             return ResponseEntity.ok(UserResponseDTO.success("회원가입이 완료되었습니다."));
         }
     }

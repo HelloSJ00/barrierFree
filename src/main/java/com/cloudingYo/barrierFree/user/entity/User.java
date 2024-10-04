@@ -22,9 +22,13 @@ public class User extends BaseEntity {
     @Column(name="user_id")
     private Long id;
 
+    @Column(unique = true)
     private String username;
+    @Column(unique = true)
     private String email;
     private String password;
+
+    private String role;
 
     public User(String username) {
         this.username = username;
