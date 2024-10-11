@@ -1,0 +1,25 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://admin:wjdxhd12@default-mongodb-service-181b2-26695910-e08f19173c07.kr.lb.naverncp.com:17017/test
+      auto-index-creation: true
+
+  datasource:
+    url: jdbc:mysql://default-mysql-service-f01c2-26695906-81a0fd0000bb.kr.lb.naverncp.com:13306/claudingYo
+    username: root
+    password: wjdxhd12
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+logging.level:
+  org.hibernate.type: trace
+
+ai:
+  url: "https://your-ai-service-url.com"
