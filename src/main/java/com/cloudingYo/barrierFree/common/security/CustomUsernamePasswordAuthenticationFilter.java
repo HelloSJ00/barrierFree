@@ -73,8 +73,12 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
         HttpSession session = request.getSession(true);
         session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 
+        // 이메일을 세션에 저장
+        String email = authResult.getName(); // 인증된 사용자의 이메일
+        session.setAttribute("userEmail", email);
         // 인증된 사용자 정보 추출
         String username = authResult.getName(); // 인증된 사용자 이름 (보통 이메일이나 유저명)
+        session.setAttribute("username", username);
         Collection<? extends GrantedAuthority> roles = authResult.getAuthorities(); // 권한 정보
 
         // 원하는 JSON 응답 생성

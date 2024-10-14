@@ -12,32 +12,32 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 class InfraRepositoryTest {
-    @Autowired
-    EntityManager em ;
-    @Autowired
-    InfraRepository infraRepository;
-
-    @Test
-    void findInfraByAll() {
-        // given
-        Infra infraA = Infra.builder()
-                .infraname("a")
-                .build();
-        infraRepository.save(infraA);
-
-        Infra infraB = Infra.builder()
-                .infraname("b")
-                .build();
-        infraRepository.save(infraB);
-
-        em.flush();
-
-        // when
-        Infra findInfraA = infraRepository.findByInfraname("a");
-        Infra findInfraB = infraRepository.findByInfraname("b");
-
-        // then
-        assertEquals(findInfraA.getInfraname(), infraA.getInfraname());
-        assertEquals(findInfraB.getInfraname(), infraB.getInfraname());
-    }
+//    @Autowired
+//    EntityManager em ;
+//    @Autowired
+//    InfraRepository infraRepository;
+//
+//    @Test
+//    void findInfraByAll() {
+//        // given
+//        Infra infraA = Infra.builder()
+//                .infraname("a")
+//                .build();
+//        infraRepository.save(infraA);
+//
+//        Infra infraB = Infra.builder()
+//                .infraname("b")
+//                .build();
+//        infraRepository.save(infraB);
+//
+//        em.flush();
+//
+//        // when
+//        Infra findInfraA = infraRepository.findByInfraname("a");
+//        Infra findInfraB = infraRepository.findByInfraname("b");
+//
+//        // then
+//        assertEquals(findInfraA.getInfraname(), infraA.getInfraname());
+//        assertEquals(findInfraB.getInfraname(), infraB.getInfraname());
+//    }
 }

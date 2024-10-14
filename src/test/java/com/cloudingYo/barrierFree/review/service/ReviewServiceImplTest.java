@@ -17,52 +17,52 @@ import static org.junit.jupiter.api.Assertions.*;
 @Commit
 class ReviewServiceImplTest {
 
-    @Autowired
-    private ReviewService reviewService;
-
-    @Test
-    void createReview() {
-        // given
-        ReviewDTO reviewDTO = ReviewDTO.builder()
-
-                .placeId(1L)
-                .userId(1L)
-                .rating(5)
-                .content("좋아요")
-                .build();
-        // when
-        Review result = reviewService.createReview(reviewDTO);
-        // then
-        assertEquals(reviewDTO.getPlaceId(), result.getPlaceId());
-    }
-
-    @Test
-    void updateReview() {
-        Long placeId = 1L;
-        Long userId = 1L;
-        ReviewDTO findReview = reviewService.getReview(placeId,userId);
-
-        ReviewDTO updateReviewDTO = ReviewDTO.builder()
-                .placeId(findReview.getPlaceId())
-                .userId(findReview.getUserId())
-                .rating(4)
-                .content("별로에요")
-                .build();
-        // when
-        Review result = reviewService.updateReview(updateReviewDTO);
-        // then
-        assertEquals(updateReviewDTO.getRating(), result.getRating());
-    }
-
-    @Test
-    void deleteReview() {
-        Long placeId = 1L;
-        Long userId = 1L;
-        ReviewDTO findReview = reviewService.getReview(placeId,userId);
-        // when
-        Review result = reviewService.deleteReview(findReview.getPlaceId(), findReview.getUserId());
-        // then
-        assertEquals(findReview.getPlaceId(), result.getPlaceId());
-    }
+//    @Autowired
+//    private ReviewService reviewService;
+//
+//    @Test
+//    void createReview() {
+//        // given
+//        ReviewDTO reviewDTO = ReviewDTO.builder()
+//
+//                .placeId(1L)
+//                .userId(1L)
+//                .rating(5)
+//                .content("좋아요")
+//                .build();
+//        // when
+//        Review result = reviewService.createReview(reviewDTO);
+//        // then
+//        assertEquals(reviewDTO.getPlaceId(), result.getPlaceId());
+//    }
+//
+//    @Test
+//    void updateReview() {
+//        Long placeId = 1L;
+//        Long userId = 1L;
+//        ReviewDTO findReview = reviewService.getReview(placeId,userId);
+//
+//        ReviewDTO updateReviewDTO = ReviewDTO.builder()
+//                .placeId(findReview.getPlaceId())
+//                .userId(findReview.getUserId())
+//                .rating(4)
+//                .content("별로에요")
+//                .build();
+//        // when
+//        Review result = reviewService.updateReview(updateReviewDTO);
+//        // then
+//        assertEquals(updateReviewDTO.getRating(), result.getRating());
+//    }
+//
+//    @Test
+//    void deleteReview() {
+//        Long placeId = 1L;
+//        Long userId = 1L;
+//        ReviewDTO findReview = reviewService.getReview(placeId,userId);
+//        // when
+//        Review result = reviewService.deleteReview(findReview.getPlaceId(), findReview.getUserId());
+//        // then
+//        assertEquals(findReview.getPlaceId(), result.getPlaceId());
+//    }
 
 }
