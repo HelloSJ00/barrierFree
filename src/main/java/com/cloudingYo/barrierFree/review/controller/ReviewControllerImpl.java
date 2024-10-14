@@ -4,6 +4,7 @@ import com.cloudingYo.barrierFree.common.entity.ApiResponse;
 import com.cloudingYo.barrierFree.review.document.Review;
 import com.cloudingYo.barrierFree.review.dto.ReviewDTO;
 import com.cloudingYo.barrierFree.review.service.ReviewService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -55,7 +56,7 @@ public class ReviewControllerImpl implements ReviewController {
 
     @Override
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<?>> registerReview(@RequestBody(required = false) ReviewDTO reviewDTO) {
+    public ResponseEntity<ApiResponse<?>> registerReview(@RequestBody(required = false) ReviewDTO reviewDTO, HttpSession session) {
         Review review = reviewService.createReview(reviewDTO);
         if (review == null) {
             return ResponseEntity.ok(ApiResponse.fail("리뷰 등록에 실패했습니다."));
@@ -72,7 +73,7 @@ public class ReviewControllerImpl implements ReviewController {
 
     @Override
     @PostMapping("/update")
-    public ResponseEntity<ApiResponse<?>> updateReview(@RequestBody ReviewDTO reviewDTO) {
+    public ResponseEntity<ApiResponse<?>> updateReview(@RequestBody ReviewDTO reviewDTO, HttpSession session) {
         Review review = reviewService.updateReview(reviewDTO);
         if (review == null) {
             return ResponseEntity.ok(ApiResponse.fail("리뷰 수정에 실패했습니다."));
@@ -89,7 +90,7 @@ public class ReviewControllerImpl implements ReviewController {
 
     @Override
     @DeleteMapping("/delete")
-    public ResponseEntity<ApiResponse<?>> deleteReview(@RequestBody ReviewDTO reviewDTO) {
+    public ResponseEntity<ApiResponse<?>> deleteReview(@RequestBody ReviewDTO reviewDTO, HttpSession session) {
         Review review = reviewService.deleteReview(reviewDTO.getPlaceId(), reviewDTO.getUserId());
         if (review == null) {
             return ResponseEntity.ok(ApiResponse.fail("리뷰 삭제에 실패했습니다."));
