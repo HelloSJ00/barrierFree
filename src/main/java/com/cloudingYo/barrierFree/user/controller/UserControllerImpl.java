@@ -4,6 +4,7 @@ import com.cloudingYo.barrierFree.common.entity.ApiResponse;
 import com.cloudingYo.barrierFree.user.dto.UserDTO;
 import com.cloudingYo.barrierFree.user.dto.UserResponseDTO;
 import com.cloudingYo.barrierFree.user.dto.UserSignupDTO;
+import com.cloudingYo.barrierFree.user.dto.UserUpdateDTO;
 import com.cloudingYo.barrierFree.user.entity.User;
 import com.cloudingYo.barrierFree.user.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -64,24 +65,35 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @GetMapping("/findUser")
-    public ResponseEntity<UserResponseDTO<?>> findUser(@RequestParam String email) {
-        UserDTO findUser = userService.findUser(email);
-        if (findUser == null){
+    public ResponseEntity<UserResponseDTO<?>> findUser(HttpSession session) {
+        // 세션에서 사용자 ID를 가져옵니다.
+        String userEmail = (String) session.getAttribute("userEmail");
+        if (userEmail == null) {
+            // 세션에 사용자 정보가 없으면 인증되지 않은 상태입니다.
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        // 데이터베이스에서 사용자 정보를 조회합니다.
+        UserDTO userInfo = userService.findUser(userEmail);
+        if (userInfo == null){
             return ResponseEntity.ok(UserResponseDTO.fail("회원정보를 찾을 수 없습니다."));
         }
         else{
-            return ResponseEntity.ok(UserResponseDTO.success("회원정보를 찾았습니다.", findUser));
+            return ResponseEntity.ok(UserResponseDTO.success("회원정보를 찾았습니다.", userInfo));
         }
     }
 
     @Override
     @PostMapping("/login")
-    public ResponseEntity<UserResponseDTO<?>> login(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserResponseDTO<?>> login(@RequestBody UserDTO userDTO, HttpSession session) {
         User user = userService.login(userDTO.getEmail(), userDTO.getPassword());
         if (user == null){
             return ResponseEntity.ok(UserResponseDTO.fail("로그인에 실패했습니다."));
-        }
-        else{
+        } else {
+            // 세션에 userEmail과 username 저장
+            session.setAttribute("userEmail", user.getEmail());
+            session.setAttribute("username", user.getUsername());
+
             UserDTO findUserDTO = UserDTO.builder()
                     .username(user.getUsername())
                     .email(user.getEmail())
@@ -90,10 +102,12 @@ public class UserControllerImpl implements UserController {
         }
     }
 
+
     @Override
     @PutMapping("/userUpdate")
-    public ResponseEntity<UserResponseDTO<?>> updateUser(@RequestBody UserDTO userDTO) {
-        if (userService.updateUser(userDTO)){
+    public ResponseEntity<UserResponseDTO<?>> updateUser(@RequestBody UserUpdateDTO userUpdateDTO ,HttpSession session) {
+        String email = session.getAttribute("userEmail").toString();
+        if (userService.updateUser(email,userUpdateDTO.getUsername())){
             return ResponseEntity.ok(UserResponseDTO.success("회원정보 수정이 완료되었습니다."));
         }
         else{

@@ -2,6 +2,7 @@ package com.cloudingYo.barrierFree.user.service;
 
 import com.cloudingYo.barrierFree.user.dto.UserDTO;
 import com.cloudingYo.barrierFree.user.dto.UserSignupDTO;
+import com.cloudingYo.barrierFree.user.dto.UserUpdateDTO;
 import com.cloudingYo.barrierFree.user.entity.User;
 import com.cloudingYo.barrierFree.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -90,15 +91,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateUser(UserDTO userDTO){
-        User updateUser = User.builder()
-                .username(userDTO.getUsername())
-                .email(userDTO.getEmail())
-                .password(passwordEncoder.encode(userDTO.getPassword()))  // 암호화된 비밀번호 저장
-                .build();
-
+    public boolean updateUser(String email,String updateUsername){
+        Optional<User> existingUser = userRepository.findByEmail(email);
+        if (existingUser.isEmpty()) {
+            return false;
+        }
+        User findUser = existingUser.get();
+        findUser.updateUsername(updateUsername);
         // 회원정보 수정
-        userRepository.save(updateUser);
+        userRepository.save(findUser);
         return true;
     }
 
