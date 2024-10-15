@@ -62,7 +62,9 @@ public class ReviewControllerImpl implements ReviewController {
         * 세션에 저장된 userId를 가져와서 reviewDTO에 저장
          */
         reviewDTO.setUserId((Long) session.getAttribute("userId"));
+
         Review review = reviewService.createReview(reviewDTO);
+
         if (review == null) {
             return ResponseEntity.ok(ReviewResponseDTO.fail("리뷰 등록에 실패했습니다."));
         }

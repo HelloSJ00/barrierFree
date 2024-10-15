@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -45,10 +46,18 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review createReview(ReviewDTO reviewDTO){
+    public Review createReview(ReviewDTO reviewDTO) {
         if (reviewDTO.getPlaceId() == null || reviewDTO.getUserId() == null) {
             throw new IllegalArgumentException("placeId와 userId는 필수 값입니다.");
         }
+
+        // 1. userId와 placeId가 동일한 리뷰가 이미 존재하는지 확인
+        Review existingReview = reviewRepository.findByPlaceIdAndUserId(reviewDTO.getUserId(), reviewDTO.getPlaceId());
+        if (existingReview != null) {
+            throw new RuntimeException("이 장소에 대한 리뷰는 이미 존재합니다.");
+        }
+
+        // 2. 리뷰 생성 및 저장
         try {
             Review review = Review.builder()
                     .userId(reviewDTO.getUserId())
@@ -58,9 +67,10 @@ public class ReviewServiceImpl implements ReviewService {
                     .build();
             return reviewRepository.save(review);
         } catch (MongoWriteException e) {
-            throw new RuntimeException("이 장소에 대한 리뷰는 이미 존재합니다.");
+            throw new RuntimeException("리뷰 저장 중 오류가 발생했습니다.");
         }
     }
+
 
     @Override
     public Review updateReview(ReviewDTO reviewDTO){
