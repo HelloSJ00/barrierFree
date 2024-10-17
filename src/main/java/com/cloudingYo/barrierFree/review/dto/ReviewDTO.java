@@ -10,6 +10,7 @@ import org.bson.types.ObjectId;
 public class ReviewDTO {
         private Long placeId;
         private Long userId;
+        private String username;
         private int rating;
         private String content;
 }

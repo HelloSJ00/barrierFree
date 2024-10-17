@@ -62,6 +62,7 @@ public class ReviewControllerImpl implements ReviewController {
         * 세션에 저장된 userId를 가져와서 reviewDTO에 저장
          */
         reviewDTO.setUserId((Long) session.getAttribute("userId"));
+        reviewDTO.setUsername((String) session.getAttribute("username"));
 
         Review review = reviewService.createReview(reviewDTO);
 
@@ -82,6 +83,7 @@ public class ReviewControllerImpl implements ReviewController {
     @PostMapping("/update")
     public ResponseEntity<ReviewResponseDTO<?>> updateReview(@RequestBody ReviewDTO reviewDTO, HttpSession session) {
         reviewDTO.setUserId((Long) session.getAttribute("userId"));
+        reviewDTO.setUsername((String) session.getAttribute("username"));
         Review review = reviewService.updateReview(reviewDTO);
         if (review == null) {
             return ResponseEntity.ok(ReviewResponseDTO.fail("리뷰 수정에 실패했습니다."));

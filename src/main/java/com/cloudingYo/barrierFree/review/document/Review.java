@@ -22,6 +22,7 @@ public class Review {
     private ObjectId id;  // MongoDB의 기본 ObjectId 사용
 
     // 유저와 장소는 MongoDB에 저장하지 않으므로 해당 ID만 참조
+    private String username;
     private Long userId;
     private Long placeId;
     private String content;
