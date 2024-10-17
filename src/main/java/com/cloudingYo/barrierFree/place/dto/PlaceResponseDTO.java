@@ -12,44 +12,40 @@ import java.util.List;
 public class PlaceResponseDTO<T> {
     private int status;
     private String message;
-    private T data;  // data 필드에 제네릭을 사용하여 다양한 타입의 데이터를 받도록 설정
+    private T data;  // 제네릭 타입으로 데이터 설정
 
-    public static PlaceResponseDTO<?> fail(String s) {
-        return PlaceResponseDTO.builder()
+    // 실패 응답 생성 메서드
+    public static <T> PlaceResponseDTO<T> fail(String message) {
+        return PlaceResponseDTO.<T>builder()
                 .status(400)
-                .message(s)
+                .message(message)
                 .build();
     }
 
-    public static PlaceResponseDTO<?> success(String s) {
-        return PlaceResponseDTO.builder()
+    // 성공 응답 생성 메서드 (데이터 없음)
+    public static <T> PlaceResponseDTO<T> success(String message) {
+        return PlaceResponseDTO.<T>builder()
                 .status(200)
-                .message(s)
+                .message(message)
                 .build();
     }
 
-    public static PlaceResponseDTO<?> success(String s, PlaceDTO data) {
-        return PlaceResponseDTO.builder()
+    // 성공 응답 생성 메서드 (데이터 포함)
+    public static <T> PlaceResponseDTO<T> success(String message, T data) {
+        return PlaceResponseDTO.<T>builder()
                 .status(200)
-                .message(s)
+                .message(message)
                 .data(data)
                 .build();
     }
 
-    public static PlaceResponseDTO<List<PlaceDTO>> success(String message, List<PlaceDTO> placeDTOS) {
-        return PlaceResponseDTO.<List<PlaceDTO>>builder()  // 제네릭 타입 명시
-                .status(200)
-                .message(message)
-                .data(placeDTOS)
-                .build();
-    }
-
-
-    public PlaceResponseDTO<?> fail(String s, T data) {
-        return PlaceResponseDTO.builder()
+    // 실패 응답 생성 메서드 (데이터 포함)
+    public static <T> PlaceResponseDTO<T> fail(String message, T data) {
+        return PlaceResponseDTO.<T>builder()
                 .status(400)
-                .message(s)
+                .message(message)
                 .data(data)
                 .build();
     }
 }
+
