@@ -86,7 +86,7 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
         String email = authResult.getName(); // 인증된 사용자의 이메일
         session.setAttribute("userEmail", email);
         // 인증된 사용자 정보 추출
-        String username = authResult.getName(); // 인증된 사용자 이름 (보통 이메일이나 유저명)
+        String username = userDetails.getRealUsername(); // 인증된 사용자 이름 (보통 이메일이나 유저명)
         session.setAttribute("username", username);
         Collection<? extends GrantedAuthority> roles = authResult.getAuthorities(); // 권한 정보
 

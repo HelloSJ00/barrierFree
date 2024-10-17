@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/review/register", "/review/delete").hasRole("USER")
+                        .requestMatchers("/review/**").hasRole("USER")
                         .requestMatchers("/", "/user/*", "/login", "/user/login", "/user/logout").permitAll()
                         .anyRequest().authenticated()
                 )

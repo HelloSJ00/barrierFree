@@ -14,7 +14,7 @@ import lombok.*;
 @Getter
 @Setter
 @CompoundIndexes({
-        @CompoundIndex(name = "user_place_unique_idx", def = "{'userId': 1, 'placeId': 1}", unique = true)
+        @CompoundIndex(name = "place_user_idx", def = "{'placeId': 1, 'userId': 1}", unique = true)
 })
 public class Review {
 
@@ -22,6 +22,7 @@ public class Review {
     private ObjectId id;  // MongoDB의 기본 ObjectId 사용
 
     // 유저와 장소는 MongoDB에 저장하지 않으므로 해당 ID만 참조
+    private String username;
     private Long userId;
     private Long placeId;
     private String content;
