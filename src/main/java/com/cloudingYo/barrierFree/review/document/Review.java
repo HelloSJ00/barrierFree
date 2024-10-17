@@ -14,7 +14,7 @@ import lombok.*;
 @Getter
 @Setter
 @CompoundIndexes({
-        @CompoundIndex(name = "user_place_unique_idx", def = "{'userId': 1, 'placeId': 1}", unique = true)
+        @CompoundIndex(name = "place_user_idx", def = "{'placeId': 1, 'userId': 1}", unique = true)
 })
 public class Review {
 
