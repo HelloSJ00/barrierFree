@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ReviewService {
     ReviewDTO getReview(Long placeId, Long userId);
-    List<ReviewDTO> getReviews(Long placeId);
+    List<ReviewDTO> getReviews(Long placeId, Long userId);
     Review createReview(ReviewDTO reviewDTO);
     Review updateReview(ReviewDTO reviewDTO);
     Review deleteReview(Long placeId, Long userId);

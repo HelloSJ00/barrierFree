@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface ReviewController {
     ResponseEntity<ReviewResponseDTO<?>> getReview(Long placeId, Long userId);
-    ResponseEntity<ReviewResponseDTO<?>> getReviews(Long placeId);
+    ResponseEntity<ReviewResponseDTO<?>> getReviews(Long placeId,HttpSession session);
     ResponseEntity<ReviewResponseDTO<?>> registerReview(@RequestBody ReviewDTO reviewDTO, HttpSession session);
     ResponseEntity<ReviewResponseDTO<?>> updateReview(@RequestBody ReviewDTO reviewDTO, HttpSession session);
     ResponseEntity<ReviewResponseDTO<?>> deleteReview(@RequestBody ReviewDTO reviewDTO, HttpSession session);

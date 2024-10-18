@@ -25,6 +25,7 @@ public class Review {
     private String username;
     private Long userId;
     private Long placeId;
+    private Long PLACE_KEY;
     private String content;
     /*
         * 평점 1~5

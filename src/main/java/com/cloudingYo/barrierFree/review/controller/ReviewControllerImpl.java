@@ -39,8 +39,10 @@ public class ReviewControllerImpl implements ReviewController {
 
     @Override
     @GetMapping("/getall")
-    public ResponseEntity<ReviewResponseDTO<?>> getReviews(@RequestParam Long placeId) {
-        List<ReviewDTO> reviews = reviewService.getReviews(placeId);
+    public ResponseEntity<ReviewResponseDTO<?>> getReviews(@RequestParam Long placeId,HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+
+        List<ReviewDTO> reviews = reviewService.getReviews(placeId,userId);
         if (reviews.isEmpty()) {
             return ResponseEntity.ok(ReviewResponseDTO.fail("리뷰를 찾을 수 없습니다."));
         }

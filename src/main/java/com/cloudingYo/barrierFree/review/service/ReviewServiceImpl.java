@@ -38,17 +38,21 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ReviewDTO> getReviews(Long placeId){
+    public List<ReviewDTO> getReviews(Long placeId, Long userId) {
         return reviewRepository.findByPlaceId(placeId)
-                .stream().map(review -> ReviewDTO.builder()
+                .stream()
+                .map(review -> ReviewDTO.builder()
                         .placeId(review.getPlaceId())
+                        .PLACE_KEY(review.getPLACE_KEY())
                         .userId(review.getUserId())
                         .username(review.getUsername())
                         .rating(review.getRating())
                         .content(review.getContent())
+                        .isMine(review.getUserId().equals(userId)) // review의 userId와 인자의 userId 비교
                         .build())
                 .toList();
     }
+
 
     @Override
     public Review createReview(ReviewDTO reviewDTO) {
