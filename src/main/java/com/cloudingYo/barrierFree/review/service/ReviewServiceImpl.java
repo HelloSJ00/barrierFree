@@ -74,6 +74,7 @@ public class ReviewServiceImpl implements ReviewService {
             Review review = Review.builder()
                     .userId(reviewDTO.getUserId())
                     .placeId(reviewDTO.getPlaceId())
+                    .PLACE_KEY(reviewDTO.getPLACE_KEY())
                     .username(reviewDTO.getUsername())
                     .content(reviewDTO.getContent())
                     .rating(reviewDTO.getRating())

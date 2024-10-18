@@ -102,10 +102,10 @@ public class ReviewControllerImpl implements ReviewController {
 
     @Override
     @DeleteMapping("/delete")
-    public ResponseEntity<ReviewResponseDTO<?>> deleteReview(@RequestBody ReviewDTO reviewDTO, HttpSession session) {
-        reviewDTO.setUserId((Long) session.getAttribute("userId"));
+    public ResponseEntity<ReviewResponseDTO<?>> deleteReview(@RequestParam Long placeId, HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
 
-        Review review = reviewService.deleteReview(reviewDTO.getPlaceId(), reviewDTO.getUserId());
+        Review review = reviewService.deleteReview(placeId ,userId);
         if (review == null) {
             return ResponseEntity.ok(ReviewResponseDTO.fail("리뷰 삭제에 실패했습니다."));
         }
