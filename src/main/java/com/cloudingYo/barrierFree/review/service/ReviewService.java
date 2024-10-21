@@ -8,9 +8,9 @@ import org.bson.types.ObjectId;
 import java.util.List;
 
 public interface ReviewService {
-    ReviewDTO getReview(Long placeId, Long userId);
-    List<ReviewDTO> getReviews(Long placeId, Long userId);
+    ReviewDTO getReview(int placeKey, Long userId);
+    List<ReviewDTO> getReviews(int placeKey, Long userId);
     Review createReview(ReviewDTO reviewDTO);
     Review updateReview(ReviewDTO reviewDTO);
-    Review deleteReview(Long placeId, Long userId);
+    Review deleteReview(int placeKey, Long userId);
 }
