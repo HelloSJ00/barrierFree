@@ -38,7 +38,7 @@ public class PlaceServiceImpl implements PlaceService {
      */
     private Place convertToEntity(PlaceDTO placeDTO){
         return Place.builder()
-                .placename(placeDTO.getPlacename())
+                .placename(placeDTO.getPLACE_NM())
                 .latitude(placeDTO.getLatitude())
                 .longitude(placeDTO.getLongitude())
                 .build();
@@ -61,21 +61,18 @@ public class PlaceServiceImpl implements PlaceService {
         // 북마크된 장소의 ID 리스트 생성
         List<Long> bookmarkedPlaceIds = bookmarkedPlaces.stream()
                 .map(FavoritePlace::getPlaceId)  // FavoritePlace에서 placeId 추출
-                .collect(Collectors.toList());
+                .toList();
 
         // 3. 추천 장소에 북마크 정보 병합
-        List<PlaceWithBookmarkDTO> placesWithBookmark = recommendedPlaces.stream()
+        return recommendedPlaces.stream()
                 .map(place -> PlaceWithBookmarkDTO.builder()
-                        .placename(place.getPlacename())
+                        .PLACE_NM(place.getPLACE_NM())
                         .latitude(place.getLatitude())
                         .longitude(place.getLongitude())
                         .bookmarked(bookmarkedPlaceIds.contains(place.getId())) // 북마크 여부 확인
                         .build()
                 )
-                .collect(Collectors.toList());
-
-
-        return placesWithBookmark;
+                .toList();
     }
 
 
