@@ -1,5 +1,7 @@
 package com.cloudingYo.barrierFree.review.service;
 
+import com.cloudingYo.barrierFree.place.entity.Place;
+import com.cloudingYo.barrierFree.place.repository.PlaceRepository;
 import com.cloudingYo.barrierFree.review.document.Review;
 import com.cloudingYo.barrierFree.review.dto.ReviewDTO;
 import com.cloudingYo.barrierFree.review.dto.ReviewResponseDTO;
@@ -22,6 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
+    private final PlaceRepository placeRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -77,6 +80,9 @@ public class ReviewServiceImpl implements ReviewService {
                     .content(reviewDTO.getContent())
                     .rating(reviewDTO.getRating())
                     .build();
+
+            Place place = placeRepository.findByPlaceKey(reviewDTO.getPlaceKey());
+
             return reviewRepository.save(review);
         } catch (MongoWriteException e) {
             log.error("Error occurred while saving review for placeKey: {}, userId: {}, error: {}", reviewDTO.getPlaceKey(), reviewDTO.getUserId(), e.getMessage());
