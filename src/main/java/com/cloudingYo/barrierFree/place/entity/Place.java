@@ -18,7 +18,10 @@ public class Place {
     @Column(name = "place_id")
     private Long id;
 
+    private int placeKey;
     private String placename;
+    private String en_placename;
+    private String category;
     private Double latitude;
     private Double longitude;
 

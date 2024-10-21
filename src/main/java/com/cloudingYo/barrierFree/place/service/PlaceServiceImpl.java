@@ -1,37 +1,83 @@
 package com.cloudingYo.barrierFree.place.service;
 
-import com.cloudingYo.barrierFree.place.dto.PlaceAIResDTO;
+import com.cloudingYo.barrierFree.favoritePlace.entity.FavoritePlace;
+import com.cloudingYo.barrierFree.favoritePlace.repository.FavoritePlaceRepository;
+import com.cloudingYo.barrierFree.place.dto.PlaceDTO;
 import com.cloudingYo.barrierFree.place.dto.PlaceDetailsDTO;
+import com.cloudingYo.barrierFree.place.dto.PlaceWithBookmarkDTO;
+import com.cloudingYo.barrierFree.place.entity.Place;
 import com.cloudingYo.barrierFree.place.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PlaceServiceImpl implements PlaceService {
 
     private final PlaceRepository placeRepository;
+    private final FavoritePlaceRepository favoritePlaceRepository;
     private final RestTemplate restTemplate;
     @Value("${ai.url}")
     private String AI_URL;
 
+    /*
+        DTO를 엔티티로 변환하는 함수
+     */
+    private Place convertToEntity(PlaceDTO placeDTO){
+        return Place.builder()
+                .placename(placeDTO.getPlacename())
+                .latitude(placeDTO.getLatitude())
+                .longitude(placeDTO.getLongitude())
+                .build();
+    }
+
     @Override
-    public List<PlaceAIResDTO> getRealTimeRecommendPlaceList() {
-        ResponseEntity<List<PlaceAIResDTO>> response = restTemplate.exchange(
+    public List<PlaceWithBookmarkDTO> getRealTimeRecommendPlaceList(Long userId) {
+        // 1. 외부 API에서 추천 장소 리스트 가져오기
+        ResponseEntity<List<PlaceDTO>> response = restTemplate.exchange(
                 AI_URL,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<PlaceAIResDTO>>() {}
+                new ParameterizedTypeReference<List<PlaceDTO>>() {}  // 리스트로 바로 변환
         );
-        return response.getBody();
+        List<PlaceDTO> recommendedPlaces = response.getBody();  // 추천 장소 리스트
+
+        // 2. 내부 DB에서 유저가 북마크한 장소 리스트 가져오기
+        List<FavoritePlace> bookmarkedPlaces = favoritePlaceRepository.findByUserId(userId);
+
+        // 북마크된 장소의 ID 리스트 생성
+        List<Long> bookmarkedPlaceIds = bookmarkedPlaces.stream()
+                .map(FavoritePlace::getPlaceId)  // FavoritePlace에서 placeId 추출
+                .collect(Collectors.toList());
+
+        // 3. 추천 장소에 북마크 정보 병합
+        List<PlaceWithBookmarkDTO> placesWithBookmark = recommendedPlaces.stream()
+                .map(place -> PlaceWithBookmarkDTO.builder()
+                        .placename(place.getPlacename())
+                        .latitude(place.getLatitude())
+                        .longitude(place.getLongitude())
+                        .bookmarked(bookmarkedPlaceIds.contains(place.getId())) // 북마크 여부 확인
+                        .build()
+                )
+                .collect(Collectors.toList());
+
+
+        return placesWithBookmark;
     }
+
 
     @Override
     public PlaceDetailsDTO getPlaceDetails(String PLACE_KEY) {
@@ -48,6 +94,19 @@ public class PlaceServiceImpl implements PlaceService {
 
         // 응답 결과를 반환
         return response.getBody();
+    }
+
+    @Override
+    public void savePlaces(List<PlaceDTO> places){
+        for (PlaceDTO place : places) {
+            Place entity = convertToEntity(place);
+            placeRepository.save(entity);
+        }
+    }
+
+    @Override
+    public void updatePlaces(){
+
     }
 
 }

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Builder
 public class PlaceDTO {
         private Long id;
-        private String name;
-        private String latitude;
-        private String longitude;
+        private String placename;
+        private Double latitude;
+        private Double longitude;
 }
