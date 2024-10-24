@@ -22,8 +22,8 @@ public class ReviewControllerImpl implements ReviewController {
 
     @Override
     @GetMapping("/getone")
-    public ResponseEntity<ReviewResponseDTO<?>> getReview(@RequestParam Long placeId, Long userId) {
-        ReviewDTO review = reviewService.getReview(placeId, userId);
+    public ResponseEntity<ReviewResponseDTO<?>> getReview(@RequestParam int placeKey, Long userId) {
+        ReviewDTO review = reviewService.getReview(placeKey, userId);
         if (review == null) {
             return ResponseEntity.ok(ReviewResponseDTO.fail("리뷰를 찾을 수 없습니다."));
         }
@@ -39,8 +39,10 @@ public class ReviewControllerImpl implements ReviewController {
 
     @Override
     @GetMapping("/getall")
-    public ResponseEntity<ReviewResponseDTO<?>> getReviews(@RequestParam Long placeId) {
-        List<ReviewDTO> reviews = reviewService.getReviews(placeId);
+    public ResponseEntity<ReviewResponseDTO<?>> getReviews(@RequestParam int placeKey,HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+
+        List<ReviewDTO> reviews = reviewService.getReviews(placeKey,userId);
         if (reviews.isEmpty()) {
             return ResponseEntity.ok(ReviewResponseDTO.fail("리뷰를 찾을 수 없습니다."));
         }
@@ -53,6 +55,26 @@ public class ReviewControllerImpl implements ReviewController {
             return ResponseEntity.ok(response);
         }
     }
+
+    @Override
+    @GetMapping("/getMyall")
+    public ResponseEntity<ReviewResponseDTO<?>> getMyReviews(HttpSession session){
+        Long userId = (Long) session.getAttribute("userId");
+
+        List<ReviewDTO> reviews = reviewService.getMyReviews(userId);
+        if (reviews.isEmpty()) {
+            return ResponseEntity.ok(ReviewResponseDTO.fail("리뷰를 찾을 수 없습니다."));
+        }
+        else{
+            ReviewResponseDTO<List<ReviewDTO>> response = ReviewResponseDTO.<List<ReviewDTO>>builder()
+                    .status(HttpStatus.OK.value())
+                    .message("success")
+                    .data(reviews)
+                    .build();
+            return ResponseEntity.ok(response);
+        }
+    }
+
 
 
     @Override
@@ -100,10 +122,10 @@ public class ReviewControllerImpl implements ReviewController {
 
     @Override
     @DeleteMapping("/delete")
-    public ResponseEntity<ReviewResponseDTO<?>> deleteReview(@RequestBody ReviewDTO reviewDTO, HttpSession session) {
-        reviewDTO.setUserId((Long) session.getAttribute("userId"));
+    public ResponseEntity<ReviewResponseDTO<?>> deleteReview(@RequestParam int placeKey, HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
 
-        Review review = reviewService.deleteReview(reviewDTO.getPlaceId(), reviewDTO.getUserId());
+        Review review = reviewService.deleteReview(placeKey ,userId);
         if (review == null) {
             return ResponseEntity.ok(ReviewResponseDTO.fail("리뷰 삭제에 실패했습니다."));
         }
