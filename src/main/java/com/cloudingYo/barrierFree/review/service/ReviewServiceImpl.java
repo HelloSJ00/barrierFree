@@ -15,6 +15,7 @@ import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,9 +31,11 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional(readOnly = true)
     public ReviewDTO getReview(int placeKey, Long userId){
         Review review = reviewRepository.findByPlaceKeyAndUserId(placeKey, userId);
+        Place place = placeRepository.findByPlaceKey(placeKey);
         return ReviewDTO.builder()
                 .placeKey(review.getPlaceKey())
                 .username(review.getUsername())
+                .placename(place.getPlacename())
                 .userId(review.getUserId())
                 .rating(review.getRating())
                 .content(review.getContent())
@@ -42,29 +45,56 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional(readOnly = true)
     public List<ReviewDTO> getReviews(int placeKey, Long userId) {
+        Place place = placeRepository.findByPlaceKey(placeKey);
         return reviewRepository.findByPlaceKey(placeKey)
                 .stream()
                 .map(review -> ReviewDTO.builder()
                         .placeKey(review.getPlaceKey())
                         .userId(review.getUserId())
                         .username(review.getUsername())
+                        .placename(place.getPlacename())
                         .rating(review.getRating())
                         .content(review.getContent())
+                        .createdAt(review.getCreatedAt())
                         .isMine(review.getUserId().equals(userId)) // review의 userId와 인자의 userId 비교
                         .build())
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReviewDTO> getMyReviews(Long userId) {
+        return reviewRepository.findTop20ByUserIdOrderByCreatedAtDesc(userId)
+                .stream()
+                .map(review -> {
+                    // placeKey로 장소를 조회하여 placeName 가져오기
+                    Place place = placeRepository.findByPlaceKey(review.getPlaceKey());
+                    String placeName = place != null ? place.getPlacename() : "Unknown Place"; // 장소가 없으면 기본값 설정
+
+                    return ReviewDTO.builder()
+                            .placeKey(review.getPlaceKey())
+                            .userId(review.getUserId())
+                            .username(review.getUsername())
+                            .rating(review.getRating())
+                            .content(review.getContent())
+                            .createdAt(review.getCreatedAt())
+                            .isMine(review.getUserId().equals(userId))  // review의 userId와 인자의 userId 비교
+                            .placename(placeName)  // placeName 추가
+                            .build();
+                })
                 .toList();
     }
 
 
     @Override
     public Review createReview(ReviewDTO reviewDTO) {
-        if (reviewDTO.getPlaceKey()  == -1|| reviewDTO.getUserId() == null) {
+        if (reviewDTO.getPlaceKey() == -1 || reviewDTO.getUserId() == null) {
             throw new IllegalArgumentException("placeId와 userId는 필수 값입니다.");
         }
 
         // 1. userId와 placeId가 동일한 리뷰가 이미 존재하는지 확인
         log.debug("Checking if review already exists for placeKey: {}, userId: {}", reviewDTO.getPlaceKey(), reviewDTO.getUserId());
-        Review existingReview = reviewRepository.findByPlaceKeyAndUserId(reviewDTO.getPlaceKey(),reviewDTO.getUserId());
+        Review existingReview = reviewRepository.findByPlaceKeyAndUserId(reviewDTO.getPlaceKey(), reviewDTO.getUserId());
         if (existingReview != null) {
             log.warn("Review already exists for placeKey: {}, userId: {}", reviewDTO.getPlaceKey(), reviewDTO.getUserId());
             throw new ReviewAlreadyExistsException("이 장소에 대한 리뷰는 이미 존재합니다.");
@@ -73,12 +103,14 @@ public class ReviewServiceImpl implements ReviewService {
         // 2. 리뷰 생성 및 저장
         try {
             log.info("Creating new review for placeKey: {}, userId: {}", reviewDTO.getPlaceKey(), reviewDTO.getUserId());
+
             Review review = Review.builder()
                     .userId(reviewDTO.getUserId())
                     .placeKey(reviewDTO.getPlaceKey())
                     .username(reviewDTO.getUsername())
                     .content(reviewDTO.getContent())
                     .rating(reviewDTO.getRating())
+                    .createdAt(LocalDateTime.now())  // 리뷰 생성 시점을 기록
                     .build();
 
             Place place = placeRepository.findByPlaceKey(reviewDTO.getPlaceKey());
@@ -90,6 +122,7 @@ public class ReviewServiceImpl implements ReviewService {
             throw new RuntimeException("리뷰 저장 중 오류가 발생했습니다.");
         }
     }
+
 
 
     @Override

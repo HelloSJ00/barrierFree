@@ -56,6 +56,26 @@ public class ReviewControllerImpl implements ReviewController {
         }
     }
 
+    @Override
+    @GetMapping("/getMyall")
+    public ResponseEntity<ReviewResponseDTO<?>> getMyReviews(HttpSession session){
+        Long userId = (Long) session.getAttribute("userId");
+
+        List<ReviewDTO> reviews = reviewService.getMyReviews(userId);
+        if (reviews.isEmpty()) {
+            return ResponseEntity.ok(ReviewResponseDTO.fail("리뷰를 찾을 수 없습니다."));
+        }
+        else{
+            ReviewResponseDTO<List<ReviewDTO>> response = ReviewResponseDTO.<List<ReviewDTO>>builder()
+                    .status(HttpStatus.OK.value())
+                    .message("success")
+                    .data(reviews)
+                    .build();
+            return ResponseEntity.ok(response);
+        }
+    }
+
+
 
     @Override
     @PostMapping("/register")

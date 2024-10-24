@@ -3,6 +3,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.bson.types.ObjectId;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -11,9 +13,11 @@ import org.bson.types.ObjectId;
 public class ReviewDTO {
 //        @JsonProperty("place_KE") // JSON에서 place_KEY와 매핑
         private int placeKey;
+        private String placename;
         private Long userId;
         private String username;
         private int rating;
         private String content;
         private boolean isMine;
+        private LocalDateTime createdAt;
 }
