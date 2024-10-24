@@ -18,7 +18,10 @@ public class Place {
     @Column(name = "place_id")
     private Long id;
 
+    private int placeKey;
     private String placename;
+    private String en_placename;
+    private String category;
     private Double latitude;
     private Double longitude;
 
@@ -26,6 +29,7 @@ public class Place {
      * 0: int값이라 별도의 설정이 없다면 기본값이 0
      */
     private int reviewCount;
+    private int totalScroe;
 
     public Place(String placename) {
         this.placename = placename;
