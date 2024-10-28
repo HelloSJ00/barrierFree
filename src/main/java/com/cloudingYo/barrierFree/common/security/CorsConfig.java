@@ -16,7 +16,7 @@ public class CorsConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:3000",
-                "http://default-nextjs-service-bfffb-26431298-715a33452f93.kr.lb.naverncp.com:80"
+                "http://default-nextjs-service-bfffb-26431298-715a33452f93.kr.lb.naverncp.com"
         ));  // 허용할 도메인
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
