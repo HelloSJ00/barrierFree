@@ -1,6 +1,8 @@
 package com.cloudingYo.barrierFree.favoritePlace.repository;
 
 import com.cloudingYo.barrierFree.favoritePlace.entity.FavoritePlace;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -10,4 +12,6 @@ public interface FavoritePlaceRepository extends JpaRepository<FavoritePlace, Lo
     FavoritePlace findByPlaceIdAndUserId(Long placeId, Long userId);
     List<FavoritePlace> findByUserId(Long userId);
     void deleteByPlaceIdAndUserId(Long placeId, Long userId);
+    Page<FavoritePlace> findByUserIdOrderByCreatedDateDesc(Long userId, Pageable pageable);
+
 }

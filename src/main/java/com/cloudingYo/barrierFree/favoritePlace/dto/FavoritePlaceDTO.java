@@ -8,6 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class FavoritePlaceDTO {
-    private Long placeId;
-    private Long userId;
+    private String placename;
+    private Double latitude;
+    private Double longitude;
+    private boolean bookmarked;
 }

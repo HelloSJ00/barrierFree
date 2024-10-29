@@ -5,6 +5,9 @@ import com.cloudingYo.barrierFree.favoritePlace.entity.FavoritePlace;
 import com.cloudingYo.barrierFree.favoritePlace.repository.FavoritePlaceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,16 +37,15 @@ public class FavoritePlaceServiceImpl implements FavoritePlaceService {
     }
 
     @Override
-    public List<FavoritePlaceDTO> getFavoritePlaceList(Long userId) {
-        List<FavoritePlace> favoritePlaceList = favoritePlaceRepository.findByUserId(userId);
-
-        // 빌더 패턴을 사용하여 FavoritePlaceDTO로 변환
-        return favoritePlaceList.stream()
+    public Page<FavoritePlaceDTO> getFavoritePlaceList(Long userId, int page) {
+        Pageable pageable = PageRequest.of(page, 5); // 페이지당 5개 설정
+        return favoritePlaceRepository.findByUserIdOrderByCreatedDateDesc(userId, pageable)
                 .map(place -> FavoritePlaceDTO.builder()
-                        .placeId(place.getPlaceId())  // getter 메서드 사용
-                        .userId(place.getUserId())    // getter 메서드 사용
+                        .placename(place.getPlacename())
+                        .bookmarked(true)
+                        .latitude(place.getLatitude())
+                        .longitude(place.getLongitude())
                         .build()
-                )
-                .collect(Collectors.toList());  // .toList() 대신 Collectors.toList() 사용
+                );
     }
 }
