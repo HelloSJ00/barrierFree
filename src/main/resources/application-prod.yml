@@ -5,7 +5,7 @@ spring:
       auto-index-creation: true
 
   datasource:
-    url: jdbc:mysql://default-mysql-service-f01c2-26695906-81a0fd0000bb.kr.lb.naverncp.com:13306/claudingYo
+    url: jdbc:mysql://default-mysql-service-f01c2-100187550-121e87eed500.kr.lb.naverncp.com:13306/claudingYo
     username: root
     password: wjdxhd12
     driver-class-name: com.mysql.cj.jdbc.Driver
