@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/review/**").hasRole("USER")
-                        .requestMatchers("/", "/user/*", "/login", "/user/login", "/user/logout").permitAll()
+                        .requestMatchers("/user/**", "/", "/login", "/user/logout", "/user/emailcheck").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilter(customFilter)  // JSON 로그인 필터 추가
