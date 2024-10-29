@@ -15,6 +15,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -150,6 +151,28 @@ public class ReviewServiceImpl implements ReviewService {
         // MongoDB에서 userId와 일치하는 리뷰를 최신순으로 페이징하여 가져옴
         Page<Review> reviewPage = reviewRepository.findByUserIdOrderByCreatedAtDesc(userId, pageable);
 
+        // 리뷰를 ReviewDTO로 변환하여 반환
+        return reviewPage.map(review -> {
+            // placeKey로 장소 조회 후 placeName 가져오기
+            Place place = placeRepository.findByPlaceKey(review.getPlaceKey());
+            String placeName = place != null ? place.getPlacename() : "Unknown Place";
+
+            return ReviewDTO.builder()
+                    .placeKey(review.getPlaceKey())
+                    .userId(review.getUserId())
+                    .username(review.getUsername())
+                    .rating(review.getRating())
+                    .content(review.getContent())
+                    .createdAt(review.getCreatedAt())
+                    .isMine(true) // 필요에 따라 수정
+                    .placename(placeName) // placeName 추가
+                    .build();
+        });
+    }
+
+    public Page<ReviewDTO> getReviewsByPlaceKey(Long placeKey, int page) {
+        Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<Review> reviewPage = reviewRepository.findByPlaceKeyOrderByCreatedAtDesc(placeKey, pageable);
         // 리뷰를 ReviewDTO로 변환하여 반환
         return reviewPage.map(review -> {
             // placeKey로 장소 조회 후 placeName 가져오기

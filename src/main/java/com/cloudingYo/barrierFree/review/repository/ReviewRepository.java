@@ -16,4 +16,6 @@ public interface ReviewRepository extends MongoRepository<Review, Long> {
     List<Review> findTop20ByUserIdOrderByCreatedAtDesc(Long userId); // userId로 최신순 20개 리뷰 조회
 //    Page<Review> findAllPaging(Pageable pageable);
     Page<Review> findByUserIdOrderByCreatedAtDesc(Long userId, Pageable pageable);
+    Page<Review> findByPlaceKeyOrderByCreatedAtDesc(Long placeKey, Pageable pageable);
+
 }

@@ -140,8 +140,8 @@ public class ReviewControllerImpl implements ReviewController {
         }
     }
 
-    @GetMapping("/paging")
-    public ResponseEntity<ReviewResponseDTO<?>> getPagingReviews(
+    @GetMapping("/getMyallPaging")
+    public ResponseEntity<ReviewResponseDTO<?>> getMyPagingReviews(
             @RequestParam int page,
             HttpSession session
     ) {
@@ -153,6 +153,22 @@ public class ReviewControllerImpl implements ReviewController {
 
         // 리뷰 페이징 데이터 가져오기
         Page<ReviewDTO> reviewPage = reviewService.getReviewsByUserId(userId, page);
+
+        // ReviewResponseDTO에 페이징된 리뷰와 추가 정보 설정
+        ReviewResponseDTO<Page<ReviewDTO>> responseDTO = new ReviewResponseDTO<>();
+        responseDTO.setData(reviewPage);
+        responseDTO.setMessage("Paged reviews for user");
+        responseDTO.setStatus(HttpStatus.OK.value());
+
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @Override
+    @GetMapping("/getPlaceAllPaging")
+    public ResponseEntity<ReviewResponseDTO<?>> getPlacePagingReviews(@RequestParam Long placeKey,@RequestParam int page,HttpSession session){
+
+        // 리뷰 페이징 데이터 가져오기
+        Page<ReviewDTO> reviewPage = reviewService.getReviewsByPlaceKey(placeKey, page);
 
         // ReviewResponseDTO에 페이징된 리뷰와 추가 정보 설정
         ReviewResponseDTO<Page<ReviewDTO>> responseDTO = new ReviewResponseDTO<>();

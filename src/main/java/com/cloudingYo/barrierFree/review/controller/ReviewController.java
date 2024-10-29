@@ -17,6 +17,8 @@ public interface ReviewController {
     ResponseEntity<ReviewResponseDTO<?>> registerReview(@RequestBody ReviewDTO reviewDTO, HttpSession session);
     ResponseEntity<ReviewResponseDTO<?>> updateReview(@RequestBody ReviewDTO reviewDTO, HttpSession session);
     ResponseEntity<ReviewResponseDTO<?>> deleteReview(@RequestParam int placeKey, HttpSession session);
-    ResponseEntity<ReviewResponseDTO<?>> getPagingReviews(@RequestParam int page,HttpSession session);
+    ResponseEntity<ReviewResponseDTO<?>> getMyPagingReviews(@RequestParam int page,HttpSession session);
+    ResponseEntity<ReviewResponseDTO<?>> getPlacePagingReviews(@RequestParam Long placeKey,@RequestParam int page,HttpSession session);
+
 
 }
