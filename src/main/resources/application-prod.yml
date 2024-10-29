@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://admin:wjdxhd12@default-mongodb-service-181b2-26695910-e08f19173c07.kr.lb.naverncp.com:17017/test
+      uri: mongodb://admin:wjdxhd12@default-mongodb-service-181b2-100187552-77508158c21f.kr.lb.naverncp.com:17017/test
       auto-index-creation: true
 
   datasource:
