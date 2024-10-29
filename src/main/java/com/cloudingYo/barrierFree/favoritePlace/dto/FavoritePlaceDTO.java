@@ -7,10 +7,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class favoritePlaceDTO {
+public class FavoritePlaceDTO {
     private String placename;
     private Double latitude;
     private Double longitude;
-    private int reviewCount;
     private boolean bookmarked;
 }

@@ -8,6 +8,7 @@ import com.cloudingYo.barrierFree.review.service.ReviewService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -138,4 +139,44 @@ public class ReviewControllerImpl implements ReviewController {
             return ResponseEntity.ok(response);
         }
     }
+
+    @GetMapping("/getMyallPaging")
+    public ResponseEntity<ReviewResponseDTO<?>> getMyPagingReviews(
+            @RequestParam int page,
+            HttpSession session
+    ) {
+        // 세션에서 userId 가져오기
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); // 인증되지 않은 경우
+        }
+
+        // 리뷰 페이징 데이터 가져오기
+        Page<ReviewDTO> reviewPage = reviewService.getReviewsByUserId(userId, page);
+
+        // ReviewResponseDTO에 페이징된 리뷰와 추가 정보 설정
+        ReviewResponseDTO<Page<ReviewDTO>> responseDTO = new ReviewResponseDTO<>();
+        responseDTO.setData(reviewPage);
+        responseDTO.setMessage("Paged reviews for user");
+        responseDTO.setStatus(HttpStatus.OK.value());
+
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @Override
+    @GetMapping("/getPlaceAllPaging")
+    public ResponseEntity<ReviewResponseDTO<?>> getPlacePagingReviews(@RequestParam Long placeKey,@RequestParam int page,HttpSession session){
+
+        // 리뷰 페이징 데이터 가져오기
+        Page<ReviewDTO> reviewPage = reviewService.getReviewsByPlaceKey(placeKey, page);
+
+        // ReviewResponseDTO에 페이징된 리뷰와 추가 정보 설정
+        ReviewResponseDTO<Page<ReviewDTO>> responseDTO = new ReviewResponseDTO<>();
+        responseDTO.setData(reviewPage);
+        responseDTO.setMessage("Paged reviews for user");
+        responseDTO.setStatus(HttpStatus.OK.value());
+
+        return ResponseEntity.ok(responseDTO);
+    }
+
 }
