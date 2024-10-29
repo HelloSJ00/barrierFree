@@ -16,7 +16,7 @@ public class CorsConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:3000",
-                "http://ingress-ngi-ingress-ngin-16d3b-100186920-4cd64223bbc6.kr.lb.naverncp.com/"
+                "http://ingress-ngi-ingress-ngin-16d3b-100186920-4cd64223bbc6.kr.lb.naverncp.com"
         ));  // 허용할 도메인
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
