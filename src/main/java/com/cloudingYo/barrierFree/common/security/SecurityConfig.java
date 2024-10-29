@@ -36,7 +36,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager, CorsConfigurationSource corsConfigurationSource) throws Exception {
         // Custom 필터 생성 및 AuthenticationManager 주입
         CustomUsernamePasswordAuthenticationFilter customFilter = new CustomUsernamePasswordAuthenticationFilter(authenticationManager);
-        customFilter.setFilterProcessesUrl("/user/login");  // 필터가 처리할 경로 설정
+        customFilter.setFilterProcessesUrl("/spring/user/login");  // 필터가 처리할 경로 설정
 
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
@@ -44,22 +44,24 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/review/**").hasRole("USER")
-                        .requestMatchers("/user/**", "/", "/login", "/user/logout", "/user/emailcheck").permitAll()
+                        .requestMatchers("/spring/review/**").hasRole("USER")
+                        .requestMatchers("/spring/user/**", "/spring/", "/spring/login", "/spring/user/logout", "/spring/user/emailcheck").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilter(customFilter)  // JSON 로그인 필터 추가
+                .addFilter(customFilter)
                 .sessionManagement((session) -> session
                         .maximumSessions(1)
-                        .expiredUrl("/login?expired=true")
+                        .expiredUrl("/spring/login?expired=true")
                 )
                 .logout((logout) -> logout
-                        .logoutUrl("/user/logout")  // 로그아웃 URL
-                        .invalidateHttpSession(true)  // 세션 무효화
-                        .deleteCookies("JSESSIONID")  // JSESSIONID 쿠키 삭제
-                        .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))  // 로그아웃 성공 시 200 OK 응답 반환
-                        .permitAll()  // 모든 사용자에게 로그아웃 허용
+                        .logoutUrl("/spring/user/logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
+                        .permitAll()
                 );
+
+
 
         return http.build();
     }
