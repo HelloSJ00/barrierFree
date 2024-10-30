@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface FavoritePlaceRepository extends JpaRepository<FavoritePlace, Long> {
     FavoritePlace findByPlaceId(Long placeId);
-    FavoritePlace findByPlaceIdAndUserId(Long placeId, Long userId);
+    FavoritePlace findByPlaceKeyAndUserId(int placeKey, Long userId);
     List<FavoritePlace> findByUserId(Long userId);
-    void deleteByPlaceIdAndUserId(Long placeId, Long userId);
+    void deleteByPlaceKeyAndUserId(int placeKey, Long userId);
     Page<FavoritePlace> findByUserIdOrderByCreatedDateDesc(Long userId, Pageable pageable);
 
 }

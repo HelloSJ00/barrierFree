@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface FavoritePlaceService {
 
-    void registerFavoritePlace(Long placeId, Long userId);
-    void deleteFavoritePlace(Long placeId, Long userId);
+    void registerFavoritePlace(int placeKey, Long userId);
+    void deleteFavoritePlace(int placeKey, Long userId);
     public Page<FavoritePlaceDTO> getFavoritePlaceList(Long userId, int page);
 }

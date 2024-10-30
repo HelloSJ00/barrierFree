@@ -9,5 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 public interface FavoritePlaceController {
+    ResponseEntity<FavoritePlaceResponseDTO<?>> registerPlace(@RequestParam int placeKey,HttpSession session);
+    ResponseEntity<FavoritePlaceResponseDTO<?>> deletePlace(@RequestParam int placeKey,HttpSession session);
     ResponseEntity<FavoritePlaceResponseDTO<?>> getFavoritePlaceList(@RequestParam(defaultValue = "0") int page, HttpSession session);
 }

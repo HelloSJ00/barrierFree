@@ -22,6 +22,7 @@ public class FavoritePlace extends BaseEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private Long placeId;
+    private int placeKey;
     private Long userId;
     private String placename;
     private Double latitude;

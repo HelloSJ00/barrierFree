@@ -41,4 +41,29 @@ public class FavoritePlaceControllerImpl implements FavoritePlaceController {
 
         return ResponseEntity.ok(response);
     }
+
+    @Override
+    @GetMapping("/register")
+    public ResponseEntity<FavoritePlaceResponseDTO<?>> registerPlace(
+            @RequestParam int placeKey, HttpSession session) {
+
+        Long userId = (Long) session.getAttribute("userId"); // 세션에서 userId 가져오기
+        favoritePlaceService.registerFavoritePlace(placeKey, userId);
+
+        return ResponseEntity.ok(new FavoritePlaceResponseDTO<>("Place bookmarked successfully"));
+    }
+
+
+    @Override
+    @GetMapping("/delete")
+    public ResponseEntity<FavoritePlaceResponseDTO<?>> deletePlace(
+            @RequestParam int placeKey, HttpSession session) {
+
+        Long userId = (Long) session.getAttribute("userId"); // 세션에서 userId 가져오기
+
+
+        favoritePlaceService.deleteFavoritePlace(placeKey, userId);
+
+        return ResponseEntity.ok(new FavoritePlaceResponseDTO<>("Place unbookmarked successfully", 200, null));
+    }
 }
