@@ -16,5 +16,5 @@ public interface ReviewService {
     Review updateReview(ReviewDTO reviewDTO);
     Review deleteReview(int placeKey, Long userId);
     Page<ReviewDTO> getReviewsByUserId(Long userId, int page);
-    Page<ReviewDTO> getReviewsByPlaceKey(Long placeKey, int page);
+    Page<ReviewDTO> getReviewsByPlaceKey(Long placeKey, int page,Long userId);
 }

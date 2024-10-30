@@ -166,9 +166,9 @@ public class ReviewControllerImpl implements ReviewController {
     @Override
     @GetMapping("/getPlaceAllPaging")
     public ResponseEntity<ReviewResponseDTO<?>> getPlacePagingReviews(@RequestParam Long placeKey,@RequestParam int page,HttpSession session){
-
+        Long userId = (Long) session.getAttribute("userId");
         // 리뷰 페이징 데이터 가져오기
-        Page<ReviewDTO> reviewPage = reviewService.getReviewsByPlaceKey(placeKey, page);
+        Page<ReviewDTO> reviewPage = reviewService.getReviewsByPlaceKey(placeKey, page,userId);
 
         // ReviewResponseDTO에 페이징된 리뷰와 추가 정보 설정
         ReviewResponseDTO<Page<ReviewDTO>> responseDTO = new ReviewResponseDTO<>();

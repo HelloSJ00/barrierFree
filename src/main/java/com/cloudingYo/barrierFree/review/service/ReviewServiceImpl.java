@@ -165,7 +165,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Page<ReviewDTO> getReviewsByPlaceKey(Long placeKey, int page) {
+    public Page<ReviewDTO> getReviewsByPlaceKey(Long placeKey, int page,Long userId) {
         Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<Review> reviewPage = reviewRepository.findByPlaceKeyOrderByCreatedAtDesc(placeKey, pageable);
 
@@ -181,7 +181,7 @@ public class ReviewServiceImpl implements ReviewService {
                     .rating(review.getRating())
                     .content(review.getContent())
                     .createdAt(review.getCreatedAt())
-                    .isMine(true)
+                    .isMine(review.getUserId().equals(userId))
                     .placename(placeName)
                     .build();
         });
