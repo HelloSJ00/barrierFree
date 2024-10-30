@@ -31,9 +31,14 @@ public class FavoritePlaceServiceImpl implements FavoritePlaceService {
 
     @Override
     public void registerFavoritePlace(int placeKey, Long userId){
+        Place place = placeRepository.findByPlaceKey(placeKey).get();
         FavoritePlace favoritePlace = FavoritePlace.builder()
                 .placeKey(placeKey)
+                .placeId(place.getId())
                 .userId(userId)
+                .placename(place.getPlacename())
+                .longitude(place.getLongitude())
+                .latitude(place.getLatitude())
                 .build();
         favoritePlaceRepository.save(favoritePlace);
     }

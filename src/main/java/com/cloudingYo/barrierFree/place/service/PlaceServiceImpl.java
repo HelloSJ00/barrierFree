@@ -44,37 +44,37 @@ public class PlaceServiceImpl implements PlaceService {
                 .build();
     }
 
-    @Override
-    public List<PlaceWithBookmarkDTO> getRealTimeRecommendPlaceList(Long userId) {
-        // 1. 외부 API에서 추천 장소 리스트 가져오기
-        ResponseEntity<List<PlaceDTO>> response = restTemplate.exchange(
-                AI_URL,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<PlaceDTO>>() {
-                }  // 리스트로 바로 변환
-        );
-        List<PlaceDTO> recommendedPlaces = response.getBody();  // 추천 장소 리스트
-
-        // 2. 내부 DB에서 유저가 북마크한 장소 리스트 가져오기
-        List<FavoritePlace> bookmarkedPlaces = favoritePlaceRepository.findByUserId(userId);
-
-        // 북마크된 장소의 ID 리스트 생성
-        List<Long> bookmarkedPlaceIds = bookmarkedPlaces.stream()
-                .map(FavoritePlace::getPlaceId)  // FavoritePlace에서 placeId 추출
-                .toList();
-
-        // 3. 추천 장소에 북마크 정보 병합
-        return recommendedPlaces.stream()
-                .map(place -> PlaceWithBookmarkDTO.builder()
-                        .PLACE_NM(place.getPLACE_NM())
-                        .latitude(place.getLatitude())
-                        .longitude(place.getLongitude())
-                        .bookmarked(bookmarkedPlaceIds.contains(place.getId())) // 북마크 여부 확인
-                        .build()
-                )
-                .toList();
-    }
+//    @Override
+//    public List<PlaceWithBookmarkDTO> getRealTimeRecommendPlaceList(Long userId) {
+//        // 1. 외부 API에서 추천 장소 리스트 가져오기
+//        ResponseEntity<List<PlaceDTO>> response = restTemplate.exchange(
+//                AI_URL,
+//                HttpMethod.GET,
+//                null,
+//                new ParameterizedTypeReference<List<PlaceDTO>>() {
+//                }  // 리스트로 바로 변환
+//        );
+//        List<PlaceDTO> recommendedPlaces = response.getBody();  // 추천 장소 리스트
+//
+//        // 2. 내부 DB에서 유저가 북마크한 장소 리스트 가져오기
+//        List<FavoritePlace> bookmarkedPlaces = favoritePlaceRepository.findByUserId(userId);
+//
+//        // 북마크된 장소의 ID 리스트 생성
+//        List<Long> bookmarkedPlaceIds = bookmarkedPlaces.stream()
+//                .map(FavoritePlace::getPlaceId)  // FavoritePlace에서 placeId 추출
+//                .toList();
+//
+//        // 3. 추천 장소에 북마크 정보 병합
+//        return recommendedPlaces.stream()
+//                .map(place -> PlaceWithBookmarkDTO.builder()
+//                        .PLACE_NM(place.getPLACE_NM())
+//                        .latitude(place.getLatitude())
+//                        .longitude(place.getLongitude())
+//                        .bookmarked(bookmarkedPlaceIds.contains(place.getId())) // 북마크 여부 확인
+//                        .build()
+//                )
+//                .toList();
+//    }
 
 
     @Override
