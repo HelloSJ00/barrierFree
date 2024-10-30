@@ -36,7 +36,7 @@ public class PlaceServiceImpl implements PlaceService {
     /*
         DTO를 엔티티로 변환하는 함수
      */
-    private Place convertToEntity(PlaceDTO placeDTO){
+    private Place convertToEntity(PlaceDTO placeDTO) {
         return Place.builder()
                 .placename(placeDTO.getPLACE_NM())
                 .latitude(placeDTO.getLatitude())
@@ -51,7 +51,8 @@ public class PlaceServiceImpl implements PlaceService {
                 AI_URL,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<PlaceDTO>>() {}  // 리스트로 바로 변환
+                new ParameterizedTypeReference<List<PlaceDTO>>() {
+                }  // 리스트로 바로 변환
         );
         List<PlaceDTO> recommendedPlaces = response.getBody();  // 추천 장소 리스트
 
@@ -94,7 +95,7 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public void savePlaces(List<PlaceDTO> places){
+    public void savePlaces(List<PlaceDTO> places) {
         for (PlaceDTO place : places) {
             Place entity = convertToEntity(place);
             placeRepository.save(entity);
@@ -102,8 +103,26 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public void updatePlaces(){
+    public void updatePlaces() {
 
     }
 
+    // placeKey가 int 타입인 경우 메서드 수정
+    @Override
+    public PlaceDTO getPlaceCoordinate(int placeKey) {
+        Place place = placeRepository.findByPlaceKey(placeKey)
+                .orElseThrow(() -> new IllegalArgumentException("Place not found"));
+
+        // Place 엔티티를 PlaceDTO로 변환
+        return PlaceDTO.builder()
+                .id(place.getId())
+                .PLACE_NM(place.getPlacename())
+                .en_placename(place.getEn_placename())
+                .PLACE_KEY(place.getPlaceKey()) // int 타입
+                .REC_SCORE((long) place.getTotalScroe()) // 필요한 경우 타입 변환
+                .category(place.getCategory())
+                .latitude(place.getLatitude())
+                .longitude(place.getLongitude())
+                .build();
+    }
 }

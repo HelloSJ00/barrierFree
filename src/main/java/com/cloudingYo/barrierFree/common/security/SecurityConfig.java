@@ -44,8 +44,8 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/spring/review/**").hasRole("USER")
-                        .requestMatchers("/spring/user/**", "/spring/", "/spring/login", "/spring/user/logout", "/spring/user/emailcheck").permitAll()
+                        .requestMatchers("/spring/review/**","/spring/place/**").hasRole("USER")
+                        .requestMatchers("/spring/user/**", "/spring/", "/spring/login", "/spring/user/logout", "/spring/user/emailCheck").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilter(customFilter)

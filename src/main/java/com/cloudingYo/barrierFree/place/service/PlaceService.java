@@ -15,4 +15,5 @@ public interface PlaceService {
     PlaceDetailsDTO getPlaceDetails(String PLACE_KEY);
     void savePlaces(List<PlaceDTO> places);
     void updatePlaces();
+    PlaceDTO getPlaceCoordinate(int placeKey);
 }
