@@ -84,26 +84,6 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    @PostMapping("/login")
-    public ResponseEntity<UserResponseDTO<?>> login(@RequestBody UserDTO userDTO, HttpSession session) {
-        User user = userService.login(userDTO.getEmail(), userDTO.getPassword());
-        if (user == null){
-            return ResponseEntity.ok(UserResponseDTO.fail("로그인에 실패했습니다."));
-        } else {
-            // 세션에 userEmail과 username 저장
-            session.setAttribute("userEmail", user.getEmail());
-            session.setAttribute("username", user.getUsername());
-
-            UserDTO findUserDTO = UserDTO.builder()
-                    .username(user.getUsername())
-                    .email(user.getEmail())
-                    .build();
-            return ResponseEntity.ok(UserResponseDTO.success("로그인에 성공했습니다.", findUserDTO));
-        }
-    }
-
-
-    @Override
     @PutMapping("/userUpdate")
     public ResponseEntity<UserResponseDTO<?>> updateUser(@RequestBody UserUpdateDTO userUpdateDTO ,HttpSession session) {
         String email = session.getAttribute("userEmail").toString();

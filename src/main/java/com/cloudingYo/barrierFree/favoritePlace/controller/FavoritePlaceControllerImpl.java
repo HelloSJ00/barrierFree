@@ -21,6 +21,30 @@ import java.util.List;
 public class FavoritePlaceControllerImpl implements FavoritePlaceController {
     private final FavoritePlaceService favoritePlaceService;
 
+    @Override
+    @GetMapping("/register")
+    public ResponseEntity<FavoritePlaceResponseDTO<?>> registerFavoritePlace(
+            @RequestParam int placeKey, HttpSession session) {
+
+        Long userId = (Long) session.getAttribute("userId"); // 세션에서 userId 가져오기
+        favoritePlaceService.registerFavoritePlace(placeKey, userId);
+
+        return ResponseEntity.ok(new FavoritePlaceResponseDTO<>("Place bookmarked successfully"));
+    }
+
+
+    @Override
+    @GetMapping("/delete")
+    public ResponseEntity<FavoritePlaceResponseDTO<?>> deleteFavoritePlace(
+            @RequestParam int placeKey, HttpSession session) {
+
+        Long userId = (Long) session.getAttribute("userId"); // 세션에서 userId 가져오기
+
+
+        favoritePlaceService.deleteFavoritePlace(placeKey, userId);
+
+        return ResponseEntity.ok(new FavoritePlaceResponseDTO<>("Place unbookmarked successfully", 200, null));
+    }
 
     // userId와 page를 인자로 받아 5개씩 페이징된 데이터 반환
     @Override
@@ -40,30 +64,5 @@ public class FavoritePlaceControllerImpl implements FavoritePlaceController {
                 .build();
 
         return ResponseEntity.ok(response);
-    }
-
-    @Override
-    @GetMapping("/register")
-    public ResponseEntity<FavoritePlaceResponseDTO<?>> registerPlace(
-            @RequestParam int placeKey, HttpSession session) {
-
-        Long userId = (Long) session.getAttribute("userId"); // 세션에서 userId 가져오기
-        favoritePlaceService.registerFavoritePlace(placeKey, userId);
-
-        return ResponseEntity.ok(new FavoritePlaceResponseDTO<>("Place bookmarked successfully"));
-    }
-
-
-    @Override
-    @GetMapping("/delete")
-    public ResponseEntity<FavoritePlaceResponseDTO<?>> deletePlace(
-            @RequestParam int placeKey, HttpSession session) {
-
-        Long userId = (Long) session.getAttribute("userId"); // 세션에서 userId 가져오기
-
-
-        favoritePlaceService.deleteFavoritePlace(placeKey, userId);
-
-        return ResponseEntity.ok(new FavoritePlaceResponseDTO<>("Place unbookmarked successfully", 200, null));
     }
 }

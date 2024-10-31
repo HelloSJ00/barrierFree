@@ -16,7 +16,6 @@ public interface UserController {
     ResponseEntity<UserResponseDTO<?>> emailCheck(@RequestParam String email);
     ResponseEntity<UserResponseDTO<?>> findUser(HttpSession session);
     ResponseEntity<UserResponseDTO<?>> registerUser(@RequestBody UserSignupDTO usersignupDTO);
-    public ResponseEntity<UserResponseDTO<?>> login(@RequestBody UserDTO userDTO, HttpSession session);
     ResponseEntity<UserResponseDTO<?>> updateUser(@RequestBody UserUpdateDTO userUpdateDTO ,HttpSession session);
     ResponseEntity<UserResponseDTO<?>> deleteUser(@RequestBody UserDTO userDTO);
 }

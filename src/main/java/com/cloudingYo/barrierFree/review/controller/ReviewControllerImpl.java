@@ -22,63 +22,6 @@ public class ReviewControllerImpl implements ReviewController {
     private final ReviewService reviewService;
 
     @Override
-    @GetMapping("/getone")
-    public ResponseEntity<ReviewResponseDTO<?>> getReview(@RequestParam int placeKey, Long userId) {
-        ReviewDTO review = reviewService.getReview(placeKey, userId);
-        if (review == null) {
-            return ResponseEntity.ok(ReviewResponseDTO.fail("리뷰를 찾을 수 없습니다."));
-        }
-        else{
-            ReviewResponseDTO<ReviewDTO> response = ReviewResponseDTO.<ReviewDTO>builder()
-                    .status(HttpStatus.OK.value())
-                    .message("success")
-                    .data(review)
-                    .build();
-            return ResponseEntity.ok(response);
-        }
-    }
-
-    @Override
-    @GetMapping("/getall")
-    public ResponseEntity<ReviewResponseDTO<?>> getReviews(@RequestParam int placeKey,HttpSession session) {
-        Long userId = (Long) session.getAttribute("userId");
-
-        List<ReviewDTO> reviews = reviewService.getReviews(placeKey,userId);
-        if (reviews.isEmpty()) {
-            return ResponseEntity.ok(ReviewResponseDTO.fail("리뷰를 찾을 수 없습니다."));
-        }
-        else{
-            ReviewResponseDTO<List<ReviewDTO>> response = ReviewResponseDTO.<List<ReviewDTO>>builder()
-                    .status(HttpStatus.OK.value())
-                    .message("success")
-                    .data(reviews)
-                    .build();
-            return ResponseEntity.ok(response);
-        }
-    }
-
-    @Override
-    @GetMapping("/getMyall")
-    public ResponseEntity<ReviewResponseDTO<?>> getMyReviews(HttpSession session){
-        Long userId = (Long) session.getAttribute("userId");
-
-        List<ReviewDTO> reviews = reviewService.getMyReviews(userId);
-        if (reviews.isEmpty()) {
-            return ResponseEntity.ok(ReviewResponseDTO.fail("리뷰를 찾을 수 없습니다."));
-        }
-        else{
-            ReviewResponseDTO<List<ReviewDTO>> response = ReviewResponseDTO.<List<ReviewDTO>>builder()
-                    .status(HttpStatus.OK.value())
-                    .message("success")
-                    .data(reviews)
-                    .build();
-            return ResponseEntity.ok(response);
-        }
-    }
-
-
-
-    @Override
     @PostMapping("/register")
     public ResponseEntity<ReviewResponseDTO<?>> registerReview(@RequestBody(required = false) ReviewDTO reviewDTO, HttpSession session) {
         /*
@@ -91,25 +34,6 @@ public class ReviewControllerImpl implements ReviewController {
 
         if (review == null) {
             return ResponseEntity.ok(ReviewResponseDTO.fail("리뷰 등록에 실패했습니다."));
-        }
-        else{
-            ReviewResponseDTO<Review> response = ReviewResponseDTO.<Review>builder()
-                    .status(HttpStatus.OK.value())
-                    .message("success")
-                    .data(review)
-                    .build();
-            return ResponseEntity.ok(response);
-        }
-    }
-
-    @Override
-    @PostMapping("/update")
-    public ResponseEntity<ReviewResponseDTO<?>> updateReview(@RequestBody ReviewDTO reviewDTO, HttpSession session) {
-        reviewDTO.setUserId((Long) session.getAttribute("userId"));
-        reviewDTO.setUsername((String) session.getAttribute("username"));
-        Review review = reviewService.updateReview(reviewDTO);
-        if (review == null) {
-            return ResponseEntity.ok(ReviewResponseDTO.fail("리뷰 수정에 실패했습니다."));
         }
         else{
             ReviewResponseDTO<Review> response = ReviewResponseDTO.<Review>builder()
@@ -178,5 +102,4 @@ public class ReviewControllerImpl implements ReviewController {
 
         return ResponseEntity.ok(responseDTO);
     }
-
 }

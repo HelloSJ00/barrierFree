@@ -9,5 +9,5 @@ public interface FavoritePlaceService {
 
     void registerFavoritePlace(int placeKey, Long userId);
     void deleteFavoritePlace(int placeKey, Long userId);
-    public Page<FavoritePlaceDTO> getFavoritePlaceList(Long userId, int page);
+    Page<FavoritePlaceDTO> getFavoritePlaceList(Long userId, int page);
 }

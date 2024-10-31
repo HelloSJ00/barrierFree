@@ -11,14 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 public interface ReviewController {
-    ResponseEntity<ReviewResponseDTO<?>> getReview(int placeKey, Long userId);
-    ResponseEntity<ReviewResponseDTO<?>> getReviews(int placeKey,HttpSession session);
-    ResponseEntity<ReviewResponseDTO<?>> getMyReviews(HttpSession session);
     ResponseEntity<ReviewResponseDTO<?>> registerReview(@RequestBody ReviewDTO reviewDTO, HttpSession session);
-    ResponseEntity<ReviewResponseDTO<?>> updateReview(@RequestBody ReviewDTO reviewDTO, HttpSession session);
     ResponseEntity<ReviewResponseDTO<?>> deleteReview(@RequestParam int placeKey, HttpSession session);
     ResponseEntity<ReviewResponseDTO<?>> getMyPagingReviews(@RequestParam int page,HttpSession session);
     ResponseEntity<ReviewResponseDTO<?>> getPlacePagingReviews(@RequestParam Long placeKey,@RequestParam int page,HttpSession session);
-
-
 }

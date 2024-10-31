@@ -18,8 +18,3 @@ spring:
         format_sql: true
 logging.level:
   org.hibernate.type: trace
-
-# application.yml
-ai:
-  url: "https://your-ai-service-url.com"
-

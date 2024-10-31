@@ -31,68 +31,6 @@ public class ReviewServiceImpl implements ReviewService {
     private final PlaceRepository placeRepository;
 
     @Override
-    @Transactional(readOnly = true)
-    public ReviewDTO getReview(int placeKey, Long userId) {
-        Review review = reviewRepository.findByPlaceKeyAndUserId(placeKey, userId);
-        Place place = placeRepository.findByPlaceKey(placeKey)
-                .orElseThrow(() -> new IllegalArgumentException("Place not found"));
-
-        return ReviewDTO.builder()
-                .placeKey(review.getPlaceKey())
-                .username(review.getUsername())
-                .placename(place.getPlacename())
-                .userId(review.getUserId())
-                .rating(review.getRating())
-                .content(review.getContent())
-                .build();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<ReviewDTO> getReviews(int placeKey, Long userId) {
-        Place place = placeRepository.findByPlaceKey(placeKey)
-                .orElseThrow(() -> new IllegalArgumentException("Place not found"));
-
-        return reviewRepository.findByPlaceKey(placeKey)
-                .stream()
-                .map(review -> ReviewDTO.builder()
-                        .placeKey(review.getPlaceKey())
-                        .userId(review.getUserId())
-                        .username(review.getUsername())
-                        .placename(place.getPlacename())
-                        .rating(review.getRating())
-                        .content(review.getContent())
-                        .createdAt(review.getCreatedAt())
-                        .isMine(review.getUserId().equals(userId))
-                        .build())
-                .toList();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<ReviewDTO> getMyReviews(Long userId) {
-        return reviewRepository.findTop20ByUserIdOrderByCreatedAtDesc(userId)
-                .stream()
-                .map(review -> {
-                    Place place = placeRepository.findByPlaceKey(review.getPlaceKey())
-                            .orElse(null); // 장소가 없을 경우 null로 설정
-                    String placeName = place != null ? place.getPlacename() : "Unknown Place";
-
-                    return ReviewDTO.builder()
-                            .placeKey(review.getPlaceKey())
-                            .userId(review.getUserId())
-                            .username(review.getUsername())
-                            .rating(review.getRating())
-                            .content(review.getContent())
-                            .createdAt(review.getCreatedAt())
-                            .isMine(review.getUserId().equals(userId))
-                            .placename(placeName)
-                            .build();
-                })
-                .toList();
-    }
-
-    @Override
     public Review createReview(ReviewDTO reviewDTO) {
         if (reviewDTO.getPlaceKey() == -1 || reviewDTO.getUserId() == null) {
             throw new IllegalArgumentException("placeId와 userId는 필수 값입니다.");
@@ -125,14 +63,6 @@ public class ReviewServiceImpl implements ReviewService {
             log.error("Error occurred while saving review for placeKey: {}, userId: {}, error: {}", reviewDTO.getPlaceKey(), reviewDTO.getUserId(), e.getMessage());
             throw new RuntimeException("리뷰 저장 중 오류가 발생했습니다.");
         }
-    }
-
-    @Override
-    public Review updateReview(ReviewDTO reviewDTO) {
-        Review review = reviewRepository.findByPlaceKeyAndUserId(reviewDTO.getPlaceKey(), reviewDTO.getUserId());
-        review.editRating(reviewDTO.getRating());
-        review.editContent(reviewDTO.getContent());
-        return reviewRepository.save(review);
     }
 
     @Override

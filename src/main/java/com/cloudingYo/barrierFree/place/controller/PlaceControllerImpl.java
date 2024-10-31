@@ -24,20 +24,6 @@ public class PlaceControllerImpl implements PlaceController{
 
     private final PlaceService placeService;
 
-//    @Override
-//    @GetMapping("/real-time-recommend")
-//    public ResponseEntity<PlaceResponseDTO<List<PlaceWithBookmarkDTO>>> getRealTimeRecommendPlaceList(HttpSession session) {
-//        Long userId = (Long) session.getAttribute("userId");  // 세션에서 불러오기
-//
-//        List<PlaceWithBookmarkDTO> realTimeRecommendPlaceList = placeService.getRealTimeRecommendPlaceList(userId);
-//        return ResponseEntity.ok(PlaceResponseDTO.success("Success", realTimeRecommendPlaceList));
-//    }
-
-    @Override
-    @GetMapping("/details")
-    public ResponseEntity<PlaceResponseDTO<PlaceDetailsDTO>> getPlaceDetails(@RequestParam("PLACE_KEY") String PLACE_KEY) {
-        return null;
-    }
     @Override
     @GetMapping("/coordinate")
     public ResponseEntity<PlaceResponseDTO<PlaceDTO>> getPlaceCoordinate(@RequestParam("placeKey") int placeKey) {

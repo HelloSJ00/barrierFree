@@ -15,9 +15,6 @@ public interface UserService {
     boolean isEmailExists(String email);
     void registerUser(UserSignupDTO userSignupDTO);
 
-    // 로그인
-    User login(String email, String password);
-
     //회원정보 수정
     boolean updateUser(String email,String updateUsername);
 
