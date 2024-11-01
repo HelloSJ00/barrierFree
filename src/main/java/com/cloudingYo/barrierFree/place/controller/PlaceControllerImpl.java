@@ -43,6 +43,4 @@ public class PlaceControllerImpl implements PlaceController{
             return ResponseEntity.status(400).body(response);
         }
     }
-
-
 }

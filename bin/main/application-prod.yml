@@ -1,12 +1,13 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/test_db  # MongoDB 연결 URI
+      uri: mongodb://admin:wjdxhd12@default-mongodb-service-181b2-100187552-77508158c21f.kr.lb.naverncp.com:17017/test
       auto-index-creation: true
+
   datasource:
-    url: jdbc:mysql://localhost:3306/test_db
+    url: jdbc:mysql://default-mysql-service-f01c2-100187550-121e87eed500.kr.lb.naverncp.com:13306/claudingYo
     username: root
-    password: dh7672@@
+    password: wjdxhd12
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -16,5 +17,6 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+
 logging.level:
-  org.hibernate.type: trace
+  org.hibernate.type: traces
