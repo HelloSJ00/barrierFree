@@ -20,6 +20,7 @@ public class PlaceServiceImpl implements PlaceService {
     private final PlaceRepository placeRepository;
     // placeKey가 int 타입인 경우 메서드 수정
     @Override
+    @Transactional(readOnly = true)
     public PlaceCoordinateDTO getPlaceCoordinate(int placeKey) {
         Place place = placeRepository.findByPlaceKey(placeKey)
                 .orElseThrow(() -> new IllegalArgumentException("Place not found"));
@@ -33,6 +34,7 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PlaceCoordinateDTO getPlaceCoordinateV2(int placeKey) {
         return placeRepository.findCoordinateByPlaceKey(placeKey)
                 .orElseThrow(() -> new IllegalArgumentException("Place not found with placeKey: " + placeKey));
