@@ -4,14 +4,11 @@ import com.cloudingYo.barrierFree.place.entity.Place;
 import com.cloudingYo.barrierFree.place.repository.PlaceRepository;
 import com.cloudingYo.barrierFree.review.document.Review;
 import com.cloudingYo.barrierFree.review.dto.ReviewDTO;
-import com.cloudingYo.barrierFree.review.dto.ReviewResponseDTO;
 import com.cloudingYo.barrierFree.review.exception.ReviewAlreadyExistsException;
 import com.cloudingYo.barrierFree.review.repository.ReviewRepository;
-import com.mongodb.DuplicateKeyException;
 import com.mongodb.MongoWriteException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 @Service

@@ -1,11 +1,7 @@
 package com.cloudingYo.barrierFree.user.controller;
 
-import com.cloudingYo.barrierFree.common.entity.ApiResponse;
 import com.cloudingYo.barrierFree.user.dto.UserDTO;
 import com.cloudingYo.barrierFree.user.dto.UserResponseDTO;
-import com.cloudingYo.barrierFree.user.dto.UserSignupDTO;
-import com.cloudingYo.barrierFree.user.dto.UserUpdateDTO;
-import com.cloudingYo.barrierFree.user.entity.User;
 import com.cloudingYo.barrierFree.user.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -52,12 +48,12 @@ public class UserControllerImpl implements UserController {
     }
     @Override
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO<?>> registerUser(@RequestBody UserSignupDTO userSignupDTO) {
-        if (userService.isEmailExists(userSignupDTO.getEmail())){
+    public ResponseEntity<UserResponseDTO<?>> registerUser(@RequestBody UserDTO userDTO) {
+        if (userService.isEmailExists(userDTO.getEmail())){
             return ResponseEntity.ok(UserResponseDTO.fail("이미 존재하는 이메일입니다."));
         }
         else{
-            userService.registerUser(userSignupDTO);
+            userService.registerUser(userDTO);
             return ResponseEntity.ok(UserResponseDTO.success("회원가입이 완료되었습니다."));
         }
     }
@@ -85,9 +81,9 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @PutMapping("/userUpdate")
-    public ResponseEntity<UserResponseDTO<?>> updateUser(@RequestBody UserUpdateDTO userUpdateDTO ,HttpSession session) {
+    public ResponseEntity<UserResponseDTO<?>> updateUser(@RequestBody UserDTO userDTO ,HttpSession session) {
         String email = session.getAttribute("userEmail").toString();
-        if (userService.updateUser(email,userUpdateDTO.getUsername())){
+        if (userService.updateUser(email,userDTO.getUsername())){
             return ResponseEntity.ok(UserResponseDTO.success("회원정보 수정이 완료되었습니다."));
         }
         else{

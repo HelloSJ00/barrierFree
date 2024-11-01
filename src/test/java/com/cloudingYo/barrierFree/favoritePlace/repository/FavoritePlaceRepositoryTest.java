@@ -1,14 +1,5 @@
 package com.cloudingYo.barrierFree.favoritePlace.repository;
 
-import com.cloudingYo.barrierFree.favoritePlace.entity.FavoritePlace;
-import com.cloudingYo.barrierFree.place.entity.Place;
-import com.cloudingYo.barrierFree.place.repository.PlaceRepository;
-import com.cloudingYo.barrierFree.user.entity.User;
-import com.cloudingYo.barrierFree.user.repository.UserRepository;
-import jakarta.persistence.EntityManager;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 

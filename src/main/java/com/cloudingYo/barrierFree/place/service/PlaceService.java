@@ -1,11 +1,9 @@
 package com.cloudingYo.barrierFree.place.service;
 
-import com.cloudingYo.barrierFree.place.dto.PlaceDTO;
-import com.cloudingYo.barrierFree.place.dto.PlaceDetailsDTO;
-import com.cloudingYo.barrierFree.place.dto.PlaceWithBookmarkDTO;
 
-import java.util.List;
+import com.cloudingYo.barrierFree.place.dto.PlaceCoordinateDTO;
 
 public interface PlaceService {
-    PlaceDTO getPlaceCoordinate(int placeKey);
+    PlaceCoordinateDTO getPlaceCoordinate(int placeKey);
+    PlaceCoordinateDTO getPlaceCoordinateV2(int placeKey);
 }

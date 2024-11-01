@@ -1,16 +1,12 @@
 package com.cloudingYo.barrierFree.user.service;
 
 import com.cloudingYo.barrierFree.user.dto.UserDTO;
-import com.cloudingYo.barrierFree.user.dto.UserSignupDTO;
-import com.cloudingYo.barrierFree.user.dto.UserUpdateDTO;
 import com.cloudingYo.barrierFree.user.entity.User;
 import com.cloudingYo.barrierFree.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
 
@@ -24,18 +20,6 @@ public class UserServiceImpl implements UserService {
     /*
     * 기본
      */
-    @Override
-    public User createUser(String username,String email, String password) {
-        // 회원가입
-        User newUser = User.builder()
-                .username(username)
-                .email(email)
-                .password(passwordEncoder.encode(password))  // 암호화된 비밀번호 저장
-                .build();
-
-        return newUser;
-    }
-
     @Override
     @Transactional(readOnly = true)
     public UserDTO findUser(String email) {
@@ -53,11 +37,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(UserSignupDTO userSignupDTO) {
+    public void registerUser(UserDTO userDTO) {
         User user = User.builder()
-                .username(userSignupDTO.getUsername())
-                .email(userSignupDTO.getEmail())
-                .password(passwordEncoder.encode(userSignupDTO.getPassword()))  // 암호화된 비밀번호 저장
+                .username(userDTO.getUsername())
+                .email(userDTO.getEmail())
+                .password(passwordEncoder.encode(userDTO.getPassword()))  // 암호화된 비밀번호 저장
                 .role("ROLE_USER")
                 .build();
         // 회원가입
