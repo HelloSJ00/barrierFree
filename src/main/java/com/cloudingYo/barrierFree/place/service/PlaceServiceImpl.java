@@ -1,6 +1,5 @@
 package com.cloudingYo.barrierFree.place.service;
 
-import com.cloudingYo.barrierFree.favoritePlace.repository.FavoritePlaceRepository;
 import com.cloudingYo.barrierFree.place.dto.PlaceCoordinateDTO;
 import com.cloudingYo.barrierFree.place.entity.Place;
 import com.cloudingYo.barrierFree.place.repository.PlaceRepository;
@@ -8,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Slf4j
 @Service
