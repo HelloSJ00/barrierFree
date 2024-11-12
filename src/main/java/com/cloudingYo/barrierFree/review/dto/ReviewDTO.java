@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor  // 기본 생성자 추가
 @AllArgsConstructor // 모든 필드를 받는 생성자 추가
 public class ReviewDTO {
-//        @JsonProperty("place_KE") // JSON에서 place_KEY와 매핑
         private int placeKey;
         private String placename;
         private Long userId;
