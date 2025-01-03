@@ -25,7 +25,8 @@ repositories {
 
 dependencies {
 	// Reactor Core
-	implementation 'io.projectreactor:reactor-core:3.5.8' // Spring Boot 3.1.x와 호환되는 최신 버전
+	implementation 'io.projectreactor:reactor-core:3.5.8'
+	implementation 'org.projectlombok:lombok:1.18.28'// Spring Boot 3.1.x와 호환되는 최신 버전
 	// Reactor Test
 	testImplementation 'io.projectreactor:reactor-test:3.5.8' // reactor-core와 동일한 버전으로 설정
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
