@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 public interface ReviewService {
-    Mono<Review> createReviewAsync(ReviewDTO reviewDTO) ;
+    Review createReview(ReviewDTO reviewDTO) ;
     Review deleteReview(int placeKey, Long userId);
     Page<ReviewDTO> getReviewsByUserId(Long userId, int page);
     Page<ReviewDTO> getReviewsByPlaceKey(Long placeKey, int page,Long userId);

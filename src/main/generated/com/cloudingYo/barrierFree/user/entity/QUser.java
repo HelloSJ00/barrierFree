@@ -33,7 +33,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath password = createString("password");
 
-    public final StringPath role = createString("role");
+    public final EnumPath<USER_ROLE> role = createEnum("role", USER_ROLE.class);
 
     public final StringPath username = createString("username");
 
