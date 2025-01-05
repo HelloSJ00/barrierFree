@@ -123,8 +123,51 @@ class UserServiceImplTest {
     /*
     boolean updateUser(String email,String updateUsername);
      */
+    @Test
+    void 회원은_회원_닉네임을_변경_가능하다(){
+        //givrn
+        String email = "test@test.com";
+        String updateUsername = "test";
+        UserServiceImpl userService = new UserServiceImpl(new StubExistUserRepositoryImpl(),new DummyPasswordEncoder());
+
+        //then
+        Assertions.assertThat(
+                //when
+                userService.updateUser(email,updateUsername))
+                .isTrue();
+    }
+
+    @Test
+    void 회원이_존재하지_않을시_예외(){
+        //givrn
+        String email = "test@test.com";
+        String updateUsername = "test";
+        UserServiceImpl userService = new UserServiceImpl(new StubEmptyUserRepositoryImpl(),new DummyPasswordEncoder());
+        //then
+        Assertions.assertThat(
+                        //when
+                        userService.updateUser(email,updateUsername))
+                        .isFalse();
+    }
 
     /*
     boolean deleteUser(UserDTO userDTO);
      */
+    @Test
+    void 회원이_아닌_사용자는_탈퇴시_예외_처리(){
+        //givrn
+
+        //when
+
+        //then
+    }
+
+    @Test
+    void 회원은_회원_탈퇴가_가능하다(){
+        //givrn
+
+        //when
+
+        //then
+    }
 }
