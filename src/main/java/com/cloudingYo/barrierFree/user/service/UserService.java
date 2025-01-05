@@ -10,7 +10,7 @@ public interface UserService {
 
     // 회원가입
     boolean isEmailExists(String email);
-    void registerUser(UserDTO userDTO);
+    UserDTO registerUser(UserDTO userDTO);
 
     //회원정보 수정
     boolean updateUser(String email,String updateUsername);

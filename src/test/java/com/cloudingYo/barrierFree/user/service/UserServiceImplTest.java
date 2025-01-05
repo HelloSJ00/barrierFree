@@ -89,4 +89,42 @@ class UserServiceImplTest {
     /*
     void registerUser(UserDTO userDTO);
      */
+    @Test
+    void 중복_이메일로_가입_시도시_예외_처리(){
+        //givrn
+        UserDTO userDTO = UserDTO.builder()
+                .username("test")
+                .email("test@test.com")
+                .password("test")
+                .build();
+        UserServiceImpl userService = new UserServiceImpl(new StubExistUserRepositoryImpl(),new DummyPasswordEncoder());
+
+        //then
+        org.junit.jupiter.api.Assertions.assertThrows(DuplicatedEmailException.class,()->{
+            //when
+            userService.registerUser(userDTO);
+        });
+    }
+
+    @Test
+    void 가입_가능한_이메일로_가입_시도시_성공(){
+        //givrn
+        UserDTO userDTO = UserDTO.builder()
+                .username("test")
+                .email("test@test.com")
+                .password("test")
+                .build();
+        UserServiceImpl userService = new UserServiceImpl(new StubEmptyUserRepositoryImpl(),new DummyPasswordEncoder());
+
+        //then
+        Assertions.assertThat(userService.registerUser(userDTO).getEmail()).isEqualTo(userDTO.getEmail());
+    }
+
+    /*
+    boolean updateUser(String email,String updateUsername);
+     */
+
+    /*
+    boolean deleteUser(UserDTO userDTO);
+     */
 }

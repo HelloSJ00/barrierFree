@@ -43,9 +43,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(UserDTO userDTO) {
+    public UserDTO registerUser(UserDTO userDTO) {
         if(userRepository.findByEmail(userDTO.getEmail()).isPresent()){
-            throws new DuplicatedEmailException("이 이메일은 이미 사용 중입니다.");
+            throw new DuplicatedEmailException("이 이메일은 이미 사용 중입니다.");
         }else{
             User user = User.builder()
                     .username(userDTO.getUsername())
@@ -54,7 +54,11 @@ public class UserServiceImpl implements UserService {
                     .role(USER_ROLE.ROLE_USER)
                     .build();
             // 회원가입
-            userRepository.save(user);
+            User save = userRepository.save(user);
+            return UserDTO.builder()
+                    .email(save.getEmail())
+                    .username(save.getUsername())
+                    .build();
         }
 
     }

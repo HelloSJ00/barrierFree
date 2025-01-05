@@ -8,7 +8,7 @@ import java.util.Optional;
 public class StubEmptyUserRepositoryImpl implements UserRepository {
     @Override
     public User save(User user) {
-        return null;
+        return user;
     }
 
     @Override
