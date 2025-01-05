@@ -1,6 +1,7 @@
 package com.cloudingYo.barrierFree.user.service;
 
 import com.cloudingYo.barrierFree.user.dto.UserDTO;
+import lombok.Builder;
 
 public interface UserService {
 

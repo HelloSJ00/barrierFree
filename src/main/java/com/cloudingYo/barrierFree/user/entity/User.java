@@ -1,10 +1,7 @@
 package com.cloudingYo.barrierFree.user.entity;
 
 import com.cloudingYo.barrierFree.common.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +25,8 @@ public class User extends BaseEntity {
     private String email;
     private String password;
 
-    private String role;
+    @Enumerated(EnumType.STRING) // JPA에 enum을 문자열로 저장하도록 설정
+    private USER_ROLE role;
 
     public User(String username) {
         this.username = username;

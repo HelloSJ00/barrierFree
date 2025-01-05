@@ -31,6 +31,7 @@ public class FakeUserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean existsByEmail(String email) {
-        return false;
+        return database.values().stream()
+                .anyMatch(user->user.getEmail().equals(email));
     }
 }

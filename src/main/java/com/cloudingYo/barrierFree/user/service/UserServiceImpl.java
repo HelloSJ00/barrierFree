@@ -1,7 +1,9 @@
 package com.cloudingYo.barrierFree.user.service;
 
 import com.cloudingYo.barrierFree.user.dto.UserDTO;
+import com.cloudingYo.barrierFree.user.entity.USER_ROLE;
 import com.cloudingYo.barrierFree.user.entity.User;
+import com.cloudingYo.barrierFree.user.exception.DuplicatedEmailException;
 import com.cloudingYo.barrierFree.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,10 +26,14 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public UserDTO findUser(String email) {
         Optional<User> user = userRepository.findByEmail(email);
-        return user.map(value -> UserDTO.builder()
-                .username(value.getUsername())
-                .email(value.getEmail())
-                .build()).orElse(null);
+        if(user.isEmpty()){
+            throw new DuplicatedEmailException("이 이메일은 이미 사용 중입니다.");
+        } else {
+            return user.map(value -> UserDTO.builder()
+                    .username(value.getUsername())
+                    .email(value.getEmail())
+                    .build()).orElse(null);
+        }
     }
 
     @Override
@@ -42,7 +48,7 @@ public class UserServiceImpl implements UserService {
                 .username(userDTO.getUsername())
                 .email(userDTO.getEmail())
                 .password(passwordEncoder.encode(userDTO.getPassword()))  // 암호화된 비밀번호 저장
-                .role("ROLE_USER")
+                .role(USER_ROLE.ROLE_USER)
                 .build();
         // 회원가입
         userRepository.save(user);
