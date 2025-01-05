@@ -4,6 +4,7 @@ import com.cloudingYo.barrierFree.user.dto.UserDTO;
 import com.cloudingYo.barrierFree.user.entity.USER_ROLE;
 import com.cloudingYo.barrierFree.user.entity.User;
 import com.cloudingYo.barrierFree.user.exception.DuplicatedEmailException;
+import com.cloudingYo.barrierFree.user.exception.NotExistUserException;
 import com.cloudingYo.barrierFree.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -67,7 +68,7 @@ public class UserServiceImpl implements UserService {
     public boolean updateUser(String email,String updateUsername){
         Optional<User> existingUser = userRepository.findByEmail(email);
         if (existingUser.isEmpty()) {
-            return false;
+            throw new NotExistUserException("등록되지 않은 이메일입니다.");
         }
         User findUser = existingUser.get();
         findUser.updateUsername(updateUsername);
@@ -82,7 +83,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> deleteUser = userRepository.findByEmail(userDTO.getEmail());
         // 탈퇴
         if (deleteUser.isEmpty()) {
-            return false;
+            throw new NotExistUserException("등록되지 않은 이메일입니다.");
         }
         userRepository.delete(deleteUser.get());
         return true;

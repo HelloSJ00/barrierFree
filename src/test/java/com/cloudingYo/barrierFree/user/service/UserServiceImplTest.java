@@ -8,6 +8,7 @@ import com.cloudingYo.barrierFree.user.dto.UserDTO;
 import com.cloudingYo.barrierFree.user.entity.USER_ROLE;
 import com.cloudingYo.barrierFree.user.entity.User;
 import com.cloudingYo.barrierFree.user.exception.DuplicatedEmailException;
+import com.cloudingYo.barrierFree.user.exception.NotExistUserException;
 import com.cloudingYo.barrierFree.user.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -144,10 +145,9 @@ class UserServiceImplTest {
         String updateUsername = "test";
         UserServiceImpl userService = new UserServiceImpl(new StubEmptyUserRepositoryImpl(),new DummyPasswordEncoder());
         //then
-        Assertions.assertThat(
-                        //when
-                        userService.updateUser(email,updateUsername))
-                        .isFalse();
+        org.junit.jupiter.api.Assertions.assertThrows(NotExistUserException.class,()->{
+            userService.updateUser(email,updateUsername);
+        });
     }
 
     /*
@@ -156,18 +156,29 @@ class UserServiceImplTest {
     @Test
     void 회원이_아닌_사용자는_탈퇴시_예외_처리(){
         //givrn
-
-        //when
+        UserDTO userDTO = UserDTO.builder()
+                .email("test@test.com")
+                .build();
+        UserServiceImpl userService = new UserServiceImpl(new StubEmptyUserRepositoryImpl(),new DummyPasswordEncoder());
 
         //then
+        org.junit.jupiter.api.Assertions.assertThrows(NotExistUserException.class,()->{
+           userService.deleteUser(userDTO);
+        });
     }
 
     @Test
     void 회원은_회원_탈퇴가_가능하다(){
         //givrn
-
-        //when
+        UserDTO userDTO = UserDTO.builder()
+                .email("test@test.com")
+                .build();
+        UserServiceImpl userService = new UserServiceImpl(new StubExistUserRepositoryImpl(),new DummyPasswordEncoder());
 
         //then
+        Assertions.assertThat(
+                //when
+                userService.deleteUser(userDTO)
+        ).isTrue();
     }
 }
