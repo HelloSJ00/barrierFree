@@ -25,6 +25,6 @@ public class StubExistUserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean existsByEmail(String email) {
-        return false;
+        return true;
     }
 }

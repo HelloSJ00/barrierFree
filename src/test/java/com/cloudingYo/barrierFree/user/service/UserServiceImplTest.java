@@ -69,18 +69,24 @@ class UserServiceImplTest {
     @Test
     void 이미_가입한_이메일이다(){
         //givrn
-
+        String email = "test@test.com";
         //when
-
+        UserServiceImpl userService = new UserServiceImpl(new StubEmptyUserRepositoryImpl(),new DummyPasswordEncoder());
         //then
+        Assertions.assertThat(userService.isEmailExists(email)).isFalse();
     }
 
     @Test
     void 가입_가능한_이메일이다(){
         //givrn
-
+        String email = "test@test.com";
         //when
-
+        UserServiceImpl userService = new UserServiceImpl(new StubExistUserRepositoryImpl(),new DummyPasswordEncoder());
         //then
+        Assertions.assertThat(userService.isEmailExists(email)).isTrue();
     }
+
+    /*
+    void registerUser(UserDTO userDTO);
+     */
 }
