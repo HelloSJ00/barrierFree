@@ -44,14 +44,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registerUser(UserDTO userDTO) {
-        User user = User.builder()
-                .username(userDTO.getUsername())
-                .email(userDTO.getEmail())
-                .password(passwordEncoder.encode(userDTO.getPassword()))  // 암호화된 비밀번호 저장
-                .role(USER_ROLE.ROLE_USER)
-                .build();
-        // 회원가입
-        userRepository.save(user);
+        if(userRepository.findByEmail(userDTO.getEmail()).isPresent()){
+            throws new DuplicatedEmailException("이 이메일은 이미 사용 중입니다.");
+        }else{
+            User user = User.builder()
+                    .username(userDTO.getUsername())
+                    .email(userDTO.getEmail())
+                    .password(passwordEncoder.encode(userDTO.getPassword()))  // 암호화된 비밀번호 저장
+                    .role(USER_ROLE.ROLE_USER)
+                    .build();
+            // 회원가입
+            userRepository.save(user);
+        }
+
     }
 
     @Override
