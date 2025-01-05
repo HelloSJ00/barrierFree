@@ -47,7 +47,10 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	//Querydsl 추가
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
-	testImplementation 'org.mockito:mockito-core:5.0.1' // 필요에 따라 버전 조정
+	// Mockito Core (기본 모킹 기능)
+	testImplementation 'org.mockito:mockito-core:5.5.0'
+	// Mockito JUnit 5 통합
+	testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
 
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
