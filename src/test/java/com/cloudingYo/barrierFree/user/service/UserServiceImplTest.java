@@ -1,22 +1,13 @@
 package com.cloudingYo.barrierFree.user.service;
 
 import com.cloudingYo.barrierFree.user.DummyPasswordEncoder;
-import com.cloudingYo.barrierFree.user.FakeUserRepositoryImpl;
-import com.cloudingYo.barrierFree.user.StubEmptyUserRepositoryImpl;
-import com.cloudingYo.barrierFree.user.StubExistUserRepositoryImpl;
+import com.cloudingYo.barrierFree.user.repository.StubEmptyUserRepositoryImpl;
+import com.cloudingYo.barrierFree.user.repository.StubExistUserRepositoryImpl;
 import com.cloudingYo.barrierFree.user.dto.UserDTO;
-import com.cloudingYo.barrierFree.user.entity.USER_ROLE;
-import com.cloudingYo.barrierFree.user.entity.User;
 import com.cloudingYo.barrierFree.user.exception.DuplicatedEmailException;
 import com.cloudingYo.barrierFree.user.exception.NotExistUserException;
-import com.cloudingYo.barrierFree.user.repository.UserRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Commit;
 
 class UserServiceImplTest {
     /*

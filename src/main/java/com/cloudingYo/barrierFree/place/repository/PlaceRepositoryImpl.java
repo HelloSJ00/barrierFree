@@ -23,20 +23,5 @@ public class PlaceRepositoryImpl implements PlaceRepository {
     public Optional<PlaceCoordinateDTO> findCoordinateByPlaceKey(int placeKey) {
         return placeJPARepository.findCoordinateByPlaceKey(placeKey);
     }
-    //    @Override
-//    public Optional<PlaceCoordinateDTO> findCoordinateByPlaceKey(int placeKey) {
-//        QPlace place = QPlace.place;
-//
-//        return Optional.ofNullable(
-//                queryFactory.select(
-//                                Projections.constructor(PlaceCoordinateDTO.class,
-//                                        place.placeKey,
-//                                        place.latitude,
-//                                        place.longitude)
-//                        )
-//                        .from(place)
-//                        .where(place.placeKey.eq(placeKey))
-//                        .fetchOne()
-//        );
-//    }
+
 }

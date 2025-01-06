@@ -1,4 +1,4 @@
-package com.cloudingYo.barrierFree.user;
+package com.cloudingYo.barrierFree.user.repository;
 
 import com.cloudingYo.barrierFree.user.entity.User;
 import com.cloudingYo.barrierFree.user.repository.UserRepository;

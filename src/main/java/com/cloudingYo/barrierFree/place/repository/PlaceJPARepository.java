@@ -10,7 +10,8 @@ import java.util.Optional;
 
 public interface PlaceJPARepository extends JpaRepository<Place, Long> {
 
-    @Query("SELECT p.placeKey,p.latitude,p.longitude FROM Place p WHERE p.placeKey = :placeKey")
+    @Query( "SELECT new com.cloudingYo.barrierFree.place.dto.PlaceCoordinateDTO(p.placeKey,p.latitude,p.longitude)" +
+            "FROM Place p WHERE p.placeKey = :placeKey")
     Optional<PlaceCoordinateDTO> findCoordinateByPlaceKey(@Param("placeKey") int placeKey);
 
     Optional<Place> findByPlaceKey(int placeKey);
