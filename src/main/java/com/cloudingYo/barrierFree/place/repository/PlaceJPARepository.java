@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface PlaceRepository {
-    Optional<Place> findByPlaceKey(int placeKey);
+public interface PlaceJPARepository extends JpaRepository<Place, Long> {
     Optional<PlaceCoordinateDTO> findCoordinateByPlaceKey(int placeKey);
+    Optional<Place> findByPlaceKey(int placeKey);
 }
