@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController{
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/sessionCheck")
     public ResponseEntity<String> checkSession(HttpSession session) {

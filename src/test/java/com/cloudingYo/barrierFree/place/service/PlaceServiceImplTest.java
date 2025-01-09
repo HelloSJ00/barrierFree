@@ -7,8 +7,6 @@ import com.cloudingYo.barrierFree.place.repository.StubExistPlaceRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class PlaceServiceImplTest {
     /*
     PlaceCoordinateDTO getPlaceCoordinateV2(int placeKey);
