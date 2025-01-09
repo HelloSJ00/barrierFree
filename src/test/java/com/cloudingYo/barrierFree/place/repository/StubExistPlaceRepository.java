@@ -3,21 +3,19 @@ package com.cloudingYo.barrierFree.place.repository;
 import com.cloudingYo.barrierFree.place.dto.resp.PlaceCoordinateDTO;
 import com.cloudingYo.barrierFree.place.entity.Place;
 
-import java.util.Optional;
-
 
 public class StubExistPlaceRepository implements PlaceRepository{
     @Override
-    public Optional<Place> findByPlaceKey(int placeKey) {
-        return Optional.empty();
+    public Place findByPlaceKey(Long placeKey) {
+        return null;
     }
 
     @Override
-    public Optional<PlaceCoordinateDTO> findCoordinateByPlaceKey(int placeKey) {
-        return Optional.ofNullable(PlaceCoordinateDTO.builder()
-                .PLACE_KEY(1)
+    public PlaceCoordinateDTO findCoordinateByPlaceKey(Long placeKey) {
+        return PlaceCoordinateDTO.builder()
+                .PLACE_KEY(1L)
                 .latitude(2.0)
                 .longitude(3.0)
-                .build());
+                .build();
     }
 }

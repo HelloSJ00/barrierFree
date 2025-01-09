@@ -1,9 +1,9 @@
 package com.cloudingYo.barrierFree.user.repository;
 
+import com.cloudingYo.barrierFree.common.exception.model.CustomException;
 import com.cloudingYo.barrierFree.user.entity.User;
-import com.cloudingYo.barrierFree.user.repository.UserRepository;
 
-import java.util.Optional;
+import static com.cloudingYo.barrierFree.common.exception.enums.ErrorType.NOT_FOUND_USER_INFORMATION;
 
 public class StubEmptyUserRepositoryImpl implements UserRepository {
     @Override
@@ -12,13 +12,11 @@ public class StubEmptyUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void delete(User user) {
-
-    }
+    public void delete(User user) {}
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        return Optional.empty();
+    public User findByEmail(String email) {
+        throw new CustomException(NOT_FOUND_USER_INFORMATION);
     }
 
     @Override

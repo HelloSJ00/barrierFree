@@ -4,7 +4,6 @@ import com.cloudingYo.barrierFree.Bookmark.dto.req.BookmarkDTO;
 import com.cloudingYo.barrierFree.Bookmark.dto.resp.BookmarkRegisterDTO;
 import com.cloudingYo.barrierFree.Bookmark.entity.Bookmark;
 import com.cloudingYo.barrierFree.Bookmark.repository.BookmarkRepository;
-import com.cloudingYo.barrierFree.common.exception.model.CustomException;
 import com.cloudingYo.barrierFree.place.entity.Place;
 import com.cloudingYo.barrierFree.place.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.cloudingYo.barrierFree.common.exception.enums.ErrorType.NOT_FOUND_PLACE_INFORMATION;
 
 @Service
 @Slf4j
@@ -33,8 +29,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     public BookmarkRegisterDTO registerBookmark(Long placeKey, Long userId){
-        Place place = placeRepository.findByPlaceKey(placeKey)
-                .orElseThrow(()->new CustomException(NOT_FOUND_PLACE_INFORMATION));
+        Place place = placeRepository.findByPlaceKey(placeKey);
 
         Bookmark bm = bookmarkRepository.save(Bookmark.builder()
                 .placeKey(placeKey)
@@ -65,15 +60,15 @@ public class BookmarkServiceImpl implements BookmarkService {
                 .findByUserIdOrderByCreatedDateDesc(userId, pageable)
                 .stream()
                 .map(bookmark -> {
-                    Optional<Place> placeOptional = placeRepository.findByPlaceKey(bookmark.getPlaceKey());
+                    Place place = placeRepository.findByPlaceKey(bookmark.getPlaceKey());
 
-                    return placeOptional.map(place -> BookmarkDTO.builder()
+                    return BookmarkDTO.builder()
                             .placeKey(bookmark.getPlaceKey())
                             .placename(place.getPlacename())
                             .latitude(place.getLatitude())
                             .longitude(place.getLongitude())
                             .bookmarked(true)
-                            .build()).orElse(null);
+                            .build();
                 })
                 .filter(dto -> dto != null) // null 값 제거
                 .collect(Collectors.toList());

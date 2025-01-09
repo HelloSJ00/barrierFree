@@ -1,11 +1,9 @@
 package com.cloudingYo.barrierFree.user.repository;
 
 import com.cloudingYo.barrierFree.user.entity.User;
-import com.cloudingYo.barrierFree.user.repository.UserRepository;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class FakeUserRepositoryImpl implements UserRepository {
     private final Map<Long, User> database = new HashMap<>();
@@ -23,10 +21,8 @@ public class FakeUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        return database.values().stream()
-                .filter(user -> user.getEmail().equals(email)) // 이메일이 일치하는 유저 필터링
-                .findFirst(); // 첫 번째 일치하는 유저를 Optional로 반환
+    public User findByEmail(String email) {
+        return null;
     }
 
     @Override

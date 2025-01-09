@@ -1,14 +1,11 @@
 package com.cloudingYo.barrierFree.user.repository;
 
 import com.cloudingYo.barrierFree.user.entity.User;
-import com.cloudingYo.barrierFree.user.repository.UserRepository;
-
-import java.util.Optional;
 
 public class StubExistUserRepositoryImpl implements UserRepository {
     @Override
     public User save(User user) {
-        return null;
+        return user;
     }
 
     @Override
@@ -17,10 +14,10 @@ public class StubExistUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        return Optional.of(User.builder()
+    public User findByEmail(String email) {
+        return User.builder()
                 .email(email)
-                .build());
+                .build();
     }
 
     @Override

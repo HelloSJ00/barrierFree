@@ -45,8 +45,7 @@ public class ReviewServiceImpl implements ReviewService {
         Page<Review> reviewPage = reviewRepository.findByUserIdOrderByCreatedAtDesc(userId, pageable);
 
         return reviewPage.map(review -> {
-            Place place = placeRepository.findByPlaceKey(review.getPlaceKey())
-                    .orElse(null);
+            Place place = placeRepository.findByPlaceKey(review.getPlaceKey());
             String placeName = place != null ? place.getPlacename() : "Unknown Place";
 
             return ReviewDTO.builder()
@@ -69,8 +68,7 @@ public class ReviewServiceImpl implements ReviewService {
         Page<Review> reviewPage = reviewRepository.findByPlaceKeyOrderByCreatedAtDesc(placeKey, pageable);
 
         return reviewPage.map(review -> {
-            Place place = placeRepository.findByPlaceKey(review.getPlaceKey())
-                    .orElse(null);
+            Place place = placeRepository.findByPlaceKey(review.getPlaceKey());
             String placeName = place != null ? place.getPlacename() : "Unknown Place";
 
             return ReviewDTO.builder()

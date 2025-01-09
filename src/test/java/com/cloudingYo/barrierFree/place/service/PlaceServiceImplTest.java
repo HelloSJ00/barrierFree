@@ -14,7 +14,7 @@ class PlaceServiceImplTest {
     @Test
     void 장소키로_장소_좌표를_조회할_수있다(){
         //givrn
-        int placeKey = 1;
+        Long placeKey = 1L;
         PlaceServiceImpl placeService = new PlaceServiceImpl(new StubExistPlaceRepository());
 
         //when
@@ -27,7 +27,7 @@ class PlaceServiceImplTest {
     @Test
     void 유효하지_않은_장소키로_조회시_예외_처리(){
         //givrn
-        int placeKey = 1;
+        Long placeKey = 1L;
         PlaceServiceImpl placeService = new PlaceServiceImpl(new StubEmptyPlaceRepository());
 
         //then
