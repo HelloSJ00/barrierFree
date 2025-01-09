@@ -1,11 +1,10 @@
 package com.cloudingYo.barrierFree.user.service;
 
+import com.cloudingYo.barrierFree.common.exception.model.CustomException;
 import com.cloudingYo.barrierFree.user.DummyPasswordEncoder;
+import com.cloudingYo.barrierFree.user.dto.req.UserDTO;
 import com.cloudingYo.barrierFree.user.repository.StubEmptyUserRepositoryImpl;
 import com.cloudingYo.barrierFree.user.repository.StubExistUserRepositoryImpl;
-import com.cloudingYo.barrierFree.user.dto.UserDTO;
-import com.cloudingYo.barrierFree.user.exception.DuplicatedEmailException;
-import com.cloudingYo.barrierFree.user.exception.NotExistUserException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -49,7 +48,7 @@ class UserServiceImplTest {
         UserServiceImpl userService = new UserServiceImpl(new StubEmptyUserRepositoryImpl(),new DummyPasswordEncoder());
 
         //then
-        org.junit.jupiter.api.Assertions.assertThrows(DuplicatedEmailException.class,()->{
+        org.junit.jupiter.api.Assertions.assertThrows(CustomException.class,()->{
            //when
            userService.findUser(email);
         });
@@ -92,7 +91,7 @@ class UserServiceImplTest {
         UserServiceImpl userService = new UserServiceImpl(new StubExistUserRepositoryImpl(),new DummyPasswordEncoder());
 
         //then
-        org.junit.jupiter.api.Assertions.assertThrows(DuplicatedEmailException.class,()->{
+        org.junit.jupiter.api.Assertions.assertThrows(CustomException.class,()->{
             //when
             userService.registerUser(userDTO);
         });
@@ -136,7 +135,7 @@ class UserServiceImplTest {
         String updateUsername = "test";
         UserServiceImpl userService = new UserServiceImpl(new StubEmptyUserRepositoryImpl(),new DummyPasswordEncoder());
         //then
-        org.junit.jupiter.api.Assertions.assertThrows(NotExistUserException.class,()->{
+        org.junit.jupiter.api.Assertions.assertThrows(CustomException.class,()->{
             userService.updateUser(email,updateUsername);
         });
     }
@@ -153,7 +152,7 @@ class UserServiceImplTest {
         UserServiceImpl userService = new UserServiceImpl(new StubEmptyUserRepositoryImpl(),new DummyPasswordEncoder());
 
         //then
-        org.junit.jupiter.api.Assertions.assertThrows(NotExistUserException.class,()->{
+        org.junit.jupiter.api.Assertions.assertThrows(CustomException.class,()->{
            userService.deleteUser(userDTO);
         });
     }

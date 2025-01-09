@@ -1,9 +1,8 @@
 package com.cloudingYo.barrierFree.place.service;
 
 
-import com.cloudingYo.barrierFree.place.dto.PlaceCoordinateDTO;
+import com.cloudingYo.barrierFree.place.dto.resp.PlaceCoordinateDTO;
 
 public interface PlaceService {
-    PlaceCoordinateDTO getPlaceCoordinate(int placeKey);
-    PlaceCoordinateDTO getPlaceCoordinateV2(int placeKey);
+    PlaceCoordinateDTO getPlaceCoordinateV2(Long placeKey);
 }

@@ -1,11 +1,9 @@
 package com.cloudingYo.barrierFree.user.service;
 
 import com.cloudingYo.barrierFree.common.exception.model.CustomException;
-import com.cloudingYo.barrierFree.user.dto.UserDTO;
+import com.cloudingYo.barrierFree.user.dto.req.UserDTO;
 import com.cloudingYo.barrierFree.user.entity.USER_ROLE;
 import com.cloudingYo.barrierFree.user.entity.User;
-import com.cloudingYo.barrierFree.user.exception.DuplicatedEmailException;
-import com.cloudingYo.barrierFree.user.exception.NotExistUserException;
 import com.cloudingYo.barrierFree.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,14 +22,14 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     /*
-    * 기본
+     * 기본
      */
     @Override
     @Transactional(readOnly = true)
     public UserDTO findUser(String email) {
         Optional<User> user = userRepository.findByEmail(email);
-        if(user.isEmpty()){
-            throw new DuplicatedEmailException("이 이메일은 이미 사용 중입니다.");
+        if (user.isEmpty()) {
+            throw new CustomException(NOT_FOUND_USER_INFORMATION);
         } else {
             return user.map(value -> UserDTO.builder()
                     .username(value.getUsername())
@@ -48,10 +46,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO registerUser(UserDTO userDTO) {
-        if(userRepository.findByEmail(userDTO.getEmail()).isPresent()){
-//            throw new DuplicatedEmailException("이 이메일은 이미 사용 중입니다.");
+        if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
             throw new CustomException(NOT_FOUND_USER_INFORMATION);
-        }else{
+        } else {
             User user = User.builder()
                     .username(userDTO.getUsername())
                     .email(userDTO.getEmail())
@@ -69,10 +66,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateUser(String email,String updateUsername){
+    public boolean updateUser(String email, String updateUsername) {
         Optional<User> existingUser = userRepository.findByEmail(email);
         if (existingUser.isEmpty()) {
-//            throw new NotExistUserException("등록되지 않은 이메일입니다.");
             throw new CustomException(NOT_FOUND_USER_INFORMATION);
         }
         User findUser = existingUser.get();

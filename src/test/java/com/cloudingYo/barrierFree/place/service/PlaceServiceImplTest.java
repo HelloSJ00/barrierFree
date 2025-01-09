@@ -1,7 +1,7 @@
 package com.cloudingYo.barrierFree.place.service;
 
-import com.cloudingYo.barrierFree.place.dto.PlaceCoordinateDTO;
-import com.cloudingYo.barrierFree.place.exception.NotFoundPlaceException;
+import com.cloudingYo.barrierFree.common.exception.model.CustomException;
+import com.cloudingYo.barrierFree.place.dto.resp.PlaceCoordinateDTO;
 import com.cloudingYo.barrierFree.place.repository.StubEmptyPlaceRepository;
 import com.cloudingYo.barrierFree.place.repository.StubExistPlaceRepository;
 import org.junit.jupiter.api.Assertions;
@@ -31,7 +31,7 @@ class PlaceServiceImplTest {
         PlaceServiceImpl placeService = new PlaceServiceImpl(new StubEmptyPlaceRepository());
 
         //then
-        Assertions.assertThrows(NotFoundPlaceException.class,()->{
+        Assertions.assertThrows(CustomException.class,()->{
             placeService.getPlaceCoordinateV2(placeKey);
         });
     }

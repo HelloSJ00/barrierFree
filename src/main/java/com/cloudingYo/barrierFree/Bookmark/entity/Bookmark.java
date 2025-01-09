@@ -1,6 +1,6 @@
-package com.cloudingYo.barrierFree.place.entity;
+package com.cloudingYo.barrierFree.Bookmark.entity;
 
-import jakarta.persistence.Column;
+import com.cloudingYo.barrierFree.common.entity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -16,28 +16,14 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @Builder
 @Getter
-public class Place {
-
+public class Bookmark extends BaseEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "place_id")
     private Long id;
-
+    private Long placeId;
     private Long placeKey;
+    private Long userId;
     private String placename;
-    private String en_placename;
-    private String category;
     private Double latitude;
     private Double longitude;
-
-    /**
-     * 0: int값이라 별도의 설정이 없다면 기본값이 0
-     */
-    private int reviewCount;
-
-    private int totalScroe;
-
-    public Place(String placename) {
-        this.placename = placename;
-    }
 }

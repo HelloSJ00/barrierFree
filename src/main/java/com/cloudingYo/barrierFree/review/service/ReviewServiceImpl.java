@@ -3,12 +3,9 @@ package com.cloudingYo.barrierFree.review.service;
 import com.cloudingYo.barrierFree.place.entity.Place;
 import com.cloudingYo.barrierFree.place.repository.PlaceRepository;
 import com.cloudingYo.barrierFree.review.document.Review;
-import com.cloudingYo.barrierFree.review.dto.ReviewDTO;
-import com.cloudingYo.barrierFree.review.dto.ReviewRequestDTO;
-import com.cloudingYo.barrierFree.review.exception.ReviewAlreadyExistsException;
+import com.cloudingYo.barrierFree.review.dto.req.ReviewDTO;
 import com.cloudingYo.barrierFree.review.repository.ReviewRepository;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.mongodb.MongoWriteException;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,9 +15,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-
-import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -32,19 +26,21 @@ public class ReviewServiceImpl implements ReviewService {
     private final WebClient webClient;
 
     @Override
-    public Review createReview(ReviewDTO reviewDTO) {
+    public Review createReview(ReviewDTO reviewDTO, HttpSession session) {
         return Review.builder()
                 .build();
     }
 
     @Override
-    public Review deleteReview(int placeKey, Long userId) {
+    public Review deleteReview(Long placeKey, HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
         return reviewRepository.deleteByPlaceKeyAndUserId(placeKey, userId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<ReviewDTO> getReviewsByUserId(Long userId, int page) {
+    public Page<ReviewDTO> getReviewsByUserId(HttpSession session, int page) {
+        Long userId = (Long) session.getAttribute("userId");
         Pageable pageable = PageRequest.of(page, 5);
         Page<Review> reviewPage = reviewRepository.findByUserIdOrderByCreatedAtDesc(userId, pageable);
 
@@ -67,7 +63,8 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Page<ReviewDTO> getReviewsByPlaceKey(Long placeKey, int page,Long userId) {
+    public Page<ReviewDTO> getReviewsByPlaceKey(Long placeKey, int page,HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
         Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<Review> reviewPage = reviewRepository.findByPlaceKeyOrderByCreatedAtDesc(placeKey, pageable);
 

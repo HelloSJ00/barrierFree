@@ -1,10 +1,8 @@
 package com.cloudingYo.barrierFree.user.service;
 
-import com.cloudingYo.barrierFree.user.dto.UserDTO;
-import lombok.Builder;
+import com.cloudingYo.barrierFree.user.dto.req.UserDTO;
 
 public interface UserService {
-
     // 기본
     UserDTO findUser(String email);
 

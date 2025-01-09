@@ -1,6 +1,6 @@
 package com.cloudingYo.barrierFree.user.service;
 
-import com.cloudingYo.barrierFree.user.dto.CustomUserDetails;
+import com.cloudingYo.barrierFree.user.dto.resp.CustomUserDetails;
 import com.cloudingYo.barrierFree.user.entity.User;
 import com.cloudingYo.barrierFree.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

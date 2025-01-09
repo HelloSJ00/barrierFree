@@ -1,7 +1,7 @@
 package com.cloudingYo.barrierFree.place.repository;
 
 
-import com.cloudingYo.barrierFree.place.dto.PlaceCoordinateDTO;
+import com.cloudingYo.barrierFree.place.dto.resp.PlaceCoordinateDTO;
 import com.cloudingYo.barrierFree.place.entity.Place;
 
 import java.util.Optional;

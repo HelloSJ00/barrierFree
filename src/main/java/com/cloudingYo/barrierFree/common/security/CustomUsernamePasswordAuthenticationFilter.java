@@ -1,6 +1,6 @@
 package com.cloudingYo.barrierFree.common.security;
 
-import com.cloudingYo.barrierFree.user.dto.CustomUserDetails;
+import com.cloudingYo.barrierFree.user.dto.resp.CustomUserDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

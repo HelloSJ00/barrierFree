@@ -1,6 +1,6 @@
 package com.cloudingYo.barrierFree.place.repository;
 
-import com.cloudingYo.barrierFree.place.dto.PlaceCoordinateDTO;
+import com.cloudingYo.barrierFree.place.dto.resp.PlaceCoordinateDTO;
 import com.cloudingYo.barrierFree.place.entity.Place;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,9 +10,9 @@ import java.util.Optional;
 
 public interface PlaceJPARepository extends JpaRepository<Place, Long> {
 
-    @Query( "SELECT new com.cloudingYo.barrierFree.place.dto.PlaceCoordinateDTO(p.placeKey,p.latitude,p.longitude)" +
+    @Query( "SELECT new com.cloudingYo.barrierFree.place.dto.resp.PlaceCoordinateDTO(p.placeKey,p.latitude,p.longitude)" +
             "FROM Place p WHERE p.placeKey = :placeKey")
-    Optional<PlaceCoordinateDTO> findCoordinateByPlaceKey(@Param("placeKey") int placeKey);
+    Optional<PlaceCoordinateDTO> findCoordinateByPlaceKey(@Param("placeKey") Long placeKey);
 
-    Optional<Place> findByPlaceKey(int placeKey);
+    Optional<Place> findByPlaceKey(Long placeKey);
 }
