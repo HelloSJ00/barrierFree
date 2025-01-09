@@ -1,5 +1,6 @@
 package com.cloudingYo.barrierFree.user.service;
 
+import com.cloudingYo.barrierFree.common.exception.model.CustomException;
 import com.cloudingYo.barrierFree.user.dto.UserDTO;
 import com.cloudingYo.barrierFree.user.entity.USER_ROLE;
 import com.cloudingYo.barrierFree.user.entity.User;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+
+import static com.cloudingYo.barrierFree.common.exception.enums.ErrorType.NOT_FOUND_USER_INFORMATION;
 
 @Service
 @Transactional
@@ -46,7 +49,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO registerUser(UserDTO userDTO) {
         if(userRepository.findByEmail(userDTO.getEmail()).isPresent()){
-            throw new DuplicatedEmailException("이 이메일은 이미 사용 중입니다.");
+//            throw new DuplicatedEmailException("이 이메일은 이미 사용 중입니다.");
+            throw new CustomException(NOT_FOUND_USER_INFORMATION);
         }else{
             User user = User.builder()
                     .username(userDTO.getUsername())
@@ -68,7 +72,8 @@ public class UserServiceImpl implements UserService {
     public boolean updateUser(String email,String updateUsername){
         Optional<User> existingUser = userRepository.findByEmail(email);
         if (existingUser.isEmpty()) {
-            throw new NotExistUserException("등록되지 않은 이메일입니다.");
+//            throw new NotExistUserException("등록되지 않은 이메일입니다.");
+            throw new CustomException(NOT_FOUND_USER_INFORMATION);
         }
         User findUser = existingUser.get();
         findUser.updateUsername(updateUsername);
@@ -83,7 +88,8 @@ public class UserServiceImpl implements UserService {
         Optional<User> deleteUser = userRepository.findByEmail(userDTO.getEmail());
         // 탈퇴
         if (deleteUser.isEmpty()) {
-            throw new NotExistUserException("등록되지 않은 이메일입니다.");
+//            throw new NotExistUserException("등록되지 않은 이메일입니다.");
+            throw new CustomException(NOT_FOUND_USER_INFORMATION);
         }
         userRepository.delete(deleteUser.get());
         return true;

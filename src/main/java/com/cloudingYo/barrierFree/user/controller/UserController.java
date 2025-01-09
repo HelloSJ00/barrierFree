@@ -1,13 +1,17 @@
 package com.cloudingYo.barrierFree.user.controller;
 
+import com.cloudingYo.barrierFree.common.entity.ApiResponse;
 import com.cloudingYo.barrierFree.user.dto.UserDTO;
 import com.cloudingYo.barrierFree.user.dto.UserResponseDTO;
 import com.cloudingYo.barrierFree.user.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static com.cloudingYo.barrierFree.common.exception.enums.SuccessType.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -34,63 +38,30 @@ public class UserController{
     }
 
     @GetMapping("/emailCheck")
-    public ResponseEntity<UserResponseDTO<?>> emailCheck(@RequestParam String email) {
-        if (userService.isEmailExists(email)){
-            return ResponseEntity.ok(UserResponseDTO.fail("이미 존재하는 이메일입니다."));
-        }
-        else{
-            return ResponseEntity.ok(UserResponseDTO.success("사용 가능한 이메일입니다.",true));
-        }
+    public ResponseEntity<ApiResponse<?>> emailCheck(@RequestParam String email) {
+        return ResponseEntity.ok(ApiResponse.success(EMAIL_AVAILABLE,userService.isEmailExists(email)));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO<?>> registerUser(@RequestBody UserDTO userDTO) {
-        if (userService.isEmailExists(userDTO.getEmail())){
-            return ResponseEntity.ok(UserResponseDTO.fail("이미 존재하는 이메일입니다."));
-        }
-        else{
-            userService.registerUser(userDTO);
-            return ResponseEntity.ok(UserResponseDTO.success("회원가입이 완료되었습니다."));
-        }
+    public ResponseEntity<ApiResponse<?>> registerUser(@RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok(ApiResponse.success(SIGNUP_SUCCESS,userService.registerUser(userDTO)));
     }
 
     @GetMapping("/findUser")
-    public ResponseEntity<UserResponseDTO<?>> findUser(HttpSession session) {
+    public ResponseEntity<ApiResponse<?>> findUser(HttpSession session) {
         // 세션에서 사용자 ID를 가져옵니다.
         String userEmail = (String) session.getAttribute("userEmail");
-        if (userEmail == null) {
-            // 세션에 사용자 정보가 없으면 인증되지 않은 상태입니다.
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-
-        // 데이터베이스에서 사용자 정보를 조회합니다.
-        UserDTO userInfo = userService.findUser(userEmail);
-        if (userInfo == null){
-            return ResponseEntity.ok(UserResponseDTO.fail("회원정보를 찾을 수 없습니다."));
-        }
-        else{
-            return ResponseEntity.ok(UserResponseDTO.success("회원정보를 찾았습니다.", userInfo));
-        }
+        return ResponseEntity.ok(ApiResponse.success(FIND_USER_INFORMATION,userService.findUser(userEmail)));
     }
 
     @PutMapping("/userUpdate")
-    public ResponseEntity<UserResponseDTO<?>> updateUser(@RequestBody UserDTO userDTO ,HttpSession session) {
-        String email = session.getAttribute("userEmail").toString();
-        if (userService.updateUser(email,userDTO.getUsername())){
-            return ResponseEntity.ok(UserResponseDTO.success("회원정보 수정이 완료되었습니다."));
-        }
-        else{
-            return ResponseEntity.ok(UserResponseDTO.fail("회원정보 수정에 실패했습니다."));
-        }
+    public ResponseEntity<ApiResponse<?>> updateUser(@RequestBody UserDTO userDTO ,HttpSession session) {
+        String email = (String)session.getAttribute("userEmail");
+        return ResponseEntity.ok(ApiResponse.success(UPDATE_SUCCESS_USER_INFORMATION,userService.updateUser(email, userDTO.getUsername())));
     }
 
     @DeleteMapping("/deleteUser")
-    public ResponseEntity<UserResponseDTO<?>> deleteUser(@RequestBody UserDTO userDTO) {
-        if (userService.deleteUser(userDTO)){
-            return ResponseEntity.ok(UserResponseDTO.success("회원탈퇴가 완료되었습니다."));
-        }
-        else{
-            return ResponseEntity.ok(UserResponseDTO.fail("회원탈퇴에 실패했습니다."));
-        }
+    public ResponseEntity<ApiResponse<?>> deleteUser(@RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok(ApiResponse.success(SIGN_OUT_SUCCESS,userService.deleteUser(userDTO)));
     }
 }

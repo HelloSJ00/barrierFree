@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @EnableMongoRepositories
 @ComponentScan(basePackages = {"com.cloudingYo.barrierFree", "com.cloudingYo.barrierFree.common.security"})
 public class BarrierFreeApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(BarrierFreeApplication.class, args);
 	}
