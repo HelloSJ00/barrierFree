@@ -35,6 +35,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.retry:spring-retry:1.3.4'
+
 	implementation 'io.netty:netty-resolver-dns-native-macos:4.1.97.Final:osx-aarch_64' // Apple Silicon
 
 	implementation 'org.springframework.security:spring-security-crypto'

@@ -29,6 +29,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final PlaceRepository placeRepository;
     private final ApplicationEventPublisher eventPublisher;
     private final WebClient webClient;
+    private final RetryTemplate retryTemplate;
 
     @Override
     public Review createReview(ReviewDTO reviewDTO, HttpSession session) {
