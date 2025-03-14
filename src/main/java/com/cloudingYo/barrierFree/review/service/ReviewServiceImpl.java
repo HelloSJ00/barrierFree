@@ -51,12 +51,12 @@ public class ReviewServiceImpl implements ReviewService {
         log.info("트랜잭션 커밋 후 ML 서버에 트리거 전송 시작... Review ID: {}", review.getId());
 
         webClient.post()
-                .uri("http://ml-server/retrain")
+                .uri("/update_recommend")
                 .bodyValue(review)
                 .retrieve()
                 .bodyToMono(String.class)
-                .doOnSuccess(response -> log.info("ML 서버 응답: {}", response))
-                .doOnError(error -> log.error("ML 서버 트리거 실패: {}", error.getMessage()))
+                .doOnSuccess(response -> log.info("ML 서버 응답: {}", response)) // 1
+                .doOnError(error -> log.error("ML 서버 트리거 실패: {}", error.getMessage())) // 0
                 .subscribe(); // 비동기 실행
     }
 
