@@ -15,6 +15,11 @@ public class ReviewRepositoryImpl implements ReviewRepository{
     private final ReviewMongoRepository reviewMongoRepository;
 
     @Override
+    public Review saveReview(Review review){
+        return reviewMongoRepository.save(review);
+    }
+
+    @Override
     public Review findByPlaceKeyAndUserId(Long placeKey, Long userId) {
         return reviewMongoRepository.findByPlaceKeyAndUserId(placeKey,userId);
     }

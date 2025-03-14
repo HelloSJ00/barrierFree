@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface ReviewMongoRepository extends MongoRepository<Review, Long> {
+    Review save(Review review);
     Review findByPlaceKeyAndUserId(Long placeKey, Long userId); // 순서 및 타입 확인
     List<Review> findByUserId(Long userId);
     List<Review> findByPlaceKey(Long placeKey);

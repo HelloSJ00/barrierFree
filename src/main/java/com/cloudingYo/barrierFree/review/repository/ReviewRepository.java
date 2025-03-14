@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ReviewRepository {
+    Review saveReview(Review review);
     Review findByPlaceKeyAndUserId(Long placeKey, Long userId); // 순서 및 타입 확인
     List<Review> findByUserId(Long userId);
     List<Review> findByPlaceKey(Long placeKey);
