@@ -26,7 +26,7 @@ public class Review {
     // 유저와 장소는 MongoDB에 저장하지 않으므로 해당 ID만 참조
     private String username;
     private Long userId;
-    private int placeKey;
+    private Long placeKey;
     private String content;
 
     /*
