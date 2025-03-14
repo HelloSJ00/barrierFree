@@ -28,7 +28,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final PlaceRepository placeRepository;
 
     @Override
-    public BookmarkRegisterDTO registerBookmark(Long placeKey, Long userId){
+    public BookmarkRegisterDTO registerBookmark(Long placeKey, Long userId) {
         Place place = placeRepository.findByPlaceKey(placeKey);
 
         Bookmark bm = bookmarkRepository.save(Bookmark.builder()
@@ -47,7 +47,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
-    public boolean deleteFavoritePlace(Long placeKey, Long userId){
+    public boolean deleteFavoritePlace(Long placeKey, Long userId) {
         return bookmarkRepository.deleteByPlaceKeyAndUserId(placeKey, userId);
     }
 

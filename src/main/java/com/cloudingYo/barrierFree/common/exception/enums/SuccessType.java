@@ -35,7 +35,6 @@ public enum SuccessType {
     GET_PLACE_REVIEWS(HttpStatus.OK,"장소 리뷰를 조회하였습니다."),
     GET_MY_REVIEWS(HttpStatus.OK,"나의 리뷰를 조회하였습니다.");
 
-
     private final HttpStatus httpStatus;
     private final String message;
 
