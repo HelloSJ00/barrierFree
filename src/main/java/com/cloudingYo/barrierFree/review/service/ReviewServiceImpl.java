@@ -4,22 +4,16 @@ import com.cloudingYo.barrierFree.place.entity.Place;
 import com.cloudingYo.barrierFree.place.repository.PlaceRepository;
 import com.cloudingYo.barrierFree.review.document.Review;
 import com.cloudingYo.barrierFree.review.dto.req.ReviewDTO;
-import com.cloudingYo.barrierFree.review.dto.req.ReviewSavedEvent;
 import com.cloudingYo.barrierFree.review.repository.ReviewRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @Slf4j
 @Service
@@ -28,9 +22,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final PlaceRepository placeRepository;
-    private final ApplicationEventPublisher eventPublisher;
-    private final WebClient webClient;
-    private final RetryTemplate retryTemplate;
+    private final ReviewEventPublisher reviewEventPublisher; // 이벤트 발행용 빈
 
     @Override
     public Review createReview(ReviewDTO reviewDTO, HttpSession session) {
@@ -41,33 +33,9 @@ public class ReviewServiceImpl implements ReviewService {
                 .content(reviewDTO.getContent())
                 .build());
 
-        // ReviewServiceImpl에서 리뷰 저장 후 이벤트 발행
-        eventPublisher.publishEvent(new ReviewSavedEvent(review));
+        // ✅ 이벤트 발행을 ReviewEventPublisher에서 수행
+        reviewEventPublisher.publishReviewSavedEvent(review);
         return review; // 트랜잭션 종료 시점
-    }
-
-    @Override
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void triggerRecommandSystem(ReviewSavedEvent event){
-        Review review = event.getReview();
-        log.info("트랜잭션 커밋 후 ML 서버에 트리거 전송 시작... Review ID: {}", review.getId());
-
-        try {
-            retryTemplate.execute(context -> {
-                webClient.post()
-                        .uri("/update_recommend")
-                        .bodyValue(review)
-                        .retrieve()
-                        .bodyToMono(String.class)
-                        .doOnSuccess(response -> log.info("ML 서버 응답: {}", response))
-                        .doOnError(error -> log.error("ML 서버 트리거 실패 (재시도 중)... {}", error.getMessage()))
-                        .block(); // 동기 실행하여 즉시 응답 확인
-
-                return null;
-            });
-        } catch (Exception e) {
-            log.error("ML 서버 트리거 재시도 실패, 최종적으로 요청을 포기합니다. Review ID: {}", review.getId());
-        }
     }
 
     @Override
